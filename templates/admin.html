@@ -3,94 +3,169 @@
 <head>
   <meta charset="UTF-8">
   <title>Админ-панель</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
 </head>
 <body>
 
-<header class="header">
-  <div class="logo">Админ-панель</div>
-  <nav class="main-nav">
-    <a href="{{ url_for('index') }}">Главная</a>
-    <a href="{{ url_for('logout') }}">Выйти</a>
-  </nav>
-</header>
+<nav style="background-color:#0019ff;">
+  <div class="nav-wrapper container">
+    <a href="{{ url_for('index') }}" class="brand-logo">Админ-панель</a>
+    <ul id="nav-mobile" class="right hide-on-med-and-down">
+      <li>
+        <form action="{{ url_for('backup_db') }}" method="POST" style="margin:0; padding:0;">
+          <button type="submit" class="btn waves-effect waves-light"
+                  style="background-color: #FFC700; color:#000; margin-top:8px;">
+            Сделать бэкап
+          </button>
+        </form>
+      </li>
+      <li><a href="{{ url_for('logout') }}">Выйти</a></li>
+    </ul>
+  </div>
+</nav>
 
-<main class="container">
-  <h1>Добавить новую книгу</h1>
-  
+<main class="container" style="margin-top:20px;">
+  <h4>Добавить новую книгу</h4>
+
   {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
-      <ul class="flash-messages">
+      <ul class="collection">
         {% for category, message in messages %}
-          <li class="{{ category }}">{{ message }}</li>
+          <li class="collection-item {{ category }}">
+            {{ message }}
+          </li>
         {% endfor %}
       </ul>
     {% endif %}
   {% endwith %}
 
-  <form action="{{ url_for('admin') }}" method="POST" enctype="multipart/form-data" class="admin-form">
-    <div class="form-group">
-      <label>Название книги *</label>
-      <input type="text" name="title" required>
-    </div>
-    <div class="form-group">
-      <label>Автор *</label>
-      <input type="text" name="author" required>
-    </div>
-    <div class="form-group">
-      <label>Направление</label>
-      <select name="direction" required>
-        <option value="Право">Право</option>
-        <option value="Экономика">Экономика</option>
-        <option value="Математика">Математика</option>
-        <option value="Физика">Физика</option>
-        <option value="Информатика">Информатика</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label>Тип материала</label>
-      <select name="material_type" required>
-        <option value="Учебник">Учебник</option>
-        <option value="Монография">Монография</option>
-        <option value="Сборник">Сборник</option>
-        <option value="Периодические издания">Периодические издания</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label>Год издания</label>
-      <input type="number" name="year">
-    </div>
-    <div class="form-group">
-      <label>Язык</label>
-      <select name="language">
-        <option value="Русский">Русский</option>
-        <option value="Английский">Английский</option>
-        <option value="Другой">Другой</option>
-      </select>
-    </div>
-    <div class="form-group" style="width: 100%;">
-      <label>Описание (краткое)</label>
-      <textarea name="description" rows="3" style="resize:none;"></textarea>
-    </div>
-    <div class="form-group">
-      <label>Обложка (фото):</label>
-      <input type="file" name="cover_file" accept="image/*">
-    </div>
-    <div class="form-group">
-      <label>Файл для скачивания:</label>
-      <input type="file" name="download_file" accept=".pdf,.doc,.docx,.epub,.fb2">
-    </div>
-    <button type="submit">Добавить книгу</button>
-  </form>
+  <div class="card hoverable">
+    <div class="card-content">
+      <form action="{{ url_for('admin') }}" method="POST" enctype="multipart/form-data">
+        <div class="row">
+          <div class="input-field col s12 m6">
+            <input type="text" name="title" id="title" required>
+            <label for="title">Название книги *</label>
+          </div>
+          <div class="input-field col s12 m6">
+            <input type="text" name="author" id="author" required>
+            <label for="author">Автор *</label>
+          </div>
+        </div>
 
-  <h2>Список книг</h2>
-  <table class="book-table">
+        <div class="row">
+          <!-- Категория -->
+          <div class="input-field col s12 m6">
+            <select name="direction" required>
+              <option value="Учебные материалы">Учебные материалы</option>
+              <option value="Научная литература">Научная литература</option>
+              <option value="Справочные издания">Справочные издания</option>
+              <option value="Естественные науки">Естественные науки</option>
+              <option value="Технические науки">Технические науки</option>
+              <option value="Гуманитарные науки">Гуманитарные науки</option>
+              <option value="Социальные науки">Социальные науки</option>
+              <option value="Экономические науки">Экономические науки</option>
+              <option value="Периодические издания">Периодические издания</option>
+              <option value="Электронные ресурсы">Электронные ресурсы</option>
+            </select>
+            <label>Категория</label>
+          </div>
+          <!-- Подкатегория -->
+          <div class="input-field col s12 m6">
+            <select name="material_type" required>
+              <option value="Учебники">Учебники</option>
+              <option value="Учебные пособия">Учебные пособия</option>
+              <option value="Практикумы">Практикумы</option>
+              <option value="Методические указания">Методические указания</option>
+              <option value="Лабораторные работы">Лабораторные работы</option>
+              <option value="Монографии">Монографии</option>
+              <option value="Диссертации">Диссертации</option>
+              <option value="Научные журналы">Научные журналы</option>
+              <option value="Сборники конференций">Сборники конференций</option>
+              <option value="Научные отчеты">Научные отчеты</option>
+              <option value="Энциклопедии">Энциклопедии</option>
+              <option value="Словари">Словари</option>
+              <option value="Справочники">Справочники</option>
+              <option value="Каталоги">Каталоги</option>
+              <option value="База ГОСТов">База ГОСТов</option>
+              <option value="Журналы">Журналы</option>
+              <option value="Газеты">Газеты</option>
+              <option value="Бюллетени">Бюллетени</option>
+              <option value="Электронные учебники">Электронные учебники</option>
+              <option value="Базы данных">Базы данных</option>
+              <option value="Мультимедийные материалы">Мультимедийные материалы</option>
+              <option value="Программное обеспечение">Программное обеспечение</option>
+            </select>
+            <label>Подкатегория</label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="input-field col s12 m6">
+            <input type="number" name="year" id="year">
+            <label for="year">Год издания</label>
+          </div>
+          <div class="input-field col s12 m6">
+            <select name="language">
+              <option value="Русский">Русский</option>
+              <option value="Английский">Английский</option>
+              <option value="Казахский">Казахский</option>
+              <option value="Другой">Другой</option>
+            </select>
+            <label>Язык</label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="input-field col s12">
+            <textarea name="description" id="description" class="materialize-textarea"></textarea>
+            <label for="description">Описание</label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="file-field input-field col s12 m6">
+            <div class="btn" style="background-color:#FFC700; color:#000;">
+              <span>Обложка</span>
+              <input type="file" name="cover_file" accept="image/*">
+            </div>
+            <div class="file-path-wrapper">
+              <input class="file-path validate" type="text"
+                     placeholder="Загрузите изображение (опционально)">
+            </div>
+          </div>
+          <div class="file-field input-field col s12 m6">
+            <div class="btn" style="background-color:#FFC700; color:#000;">
+              <span>Файл</span>
+              <input type="file" name="download_file" accept=".pdf,.doc,.docx,.epub,.fb2">
+            </div>
+            <div class="file-path-wrapper">
+              <input class="file-path validate" type="text"
+                     placeholder="Загрузите PDF или другой файл (опционально)">
+            </div>
+          </div>
+        </div>
+
+        <div class="row right-align">
+          <button type="submit" class="btn waves-effect" style="background-color:#0019ff; color:#fff;">
+            Добавить книгу
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <h4>Список книг</h4>
+  <table class="highlight responsive-table">
     <thead>
       <tr>
         <th>ID</th>
         <th>Название</th>
         <th>Автор</th>
-        <th>Направление</th>
+        <th>Категория</th>
         <th>Год</th>
         <th>Язык</th>
         <th>Действия</th>
@@ -102,13 +177,16 @@
         <td>{{ book.id }}</td>
         <td>{{ book.title }}</td>
         <td>{{ book.author }}</td>
-        <td>{{ book.direction }}</td>
+        <td>{{ book.direction }} / {{ book.material_type }}</td>
         <td>{{ book.year }}</td>
         <td>{{ book.language }}</td>
         <td>
-          <!-- Кнопка Удалить -->
           <form action="{{ url_for('delete_book', book_id=book.id) }}" method="POST" style="display:inline;">
-            <button type="submit" class="delete-btn" onclick="return confirm('Удалить книгу?');">Удалить</button>
+            <button type="submit"
+                    class="btn-small waves-effect waves-light red darken-1"
+                    onclick="return confirm('Удалить книгу?');">
+              Удалить
+            </button>
           </form>
         </td>
       </tr>
@@ -117,6 +195,23 @@
   </table>
 </main>
 
+<footer class="page-footer" style="background-color:#0019ff; margin-top:30px;">
+  <div class="container">
+    <div class="row">
+      <div class="col s12" style="color:#FFC700;">
+        © 2024 Админ-панель
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 <script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var sel = document.querySelectorAll('select');
+  M.FormSelect.init(sel);
+});
+</script>
 </body>
 </html>

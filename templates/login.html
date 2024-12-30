@@ -2,42 +2,78 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>Вход в админ-панель</title>
+  <title>Вход</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+  <style>
+    /* Дополнительная стилизация страницы входа */
+    body {
+      display: flex;
+      min-height: 100vh;
+      flex-direction: column;
+    }
+    main {
+      flex: 1 0 auto;
+    }
+  </style>
 </head>
 <body>
 
-<header class="header">
-  <div class="logo">Вход</div>
-  <nav class="main-nav">
-    <a href="{{ url_for('index') }}">Главная</a>
-  </nav>
-</header>
+<nav style="background-color:#0019ff;">
+  <div class="nav-wrapper container">
+    <a href="{{ url_for('index') }}" class="brand-logo">Вход</a>
+  </div>
+</nav>
 
-<main class="container" style="max-width:400px;">
-  <h1>Вход в админ-панель</h1>
+<main class="container" style="max-width:400px; margin-top:60px;">
+  <div class="row center">
+    <h4>Вход в админ-панель</h4>
+  </div>
 
   {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
-      <ul class="flash-messages">
+      <ul class="collection">
         {% for category, message in messages %}
-          <li class="{{ category }}">{{ message }}</li>
+          <li class="collection-item {{ category }}">{{ message }}</li>
         {% endfor %}
       </ul>
     {% endif %}
   {% endwith %}
 
-  <form action="{{ url_for('login') }}" method="POST" style="display:flex;flex-direction:column;gap:15px;">
-    <label>Имя пользователя:
-      <input type="text" name="username">
-    </label>
-    <label>Пароль:
-      <input type="password" name="password">
-    </label>
-    <button type="submit">Войти</button>
-  </form>
-
+  <div class="card hoverable">
+    <div class="card-content">
+      <form action="{{ url_for('login') }}" method="POST">
+        <div class="input-field">
+          <input type="text" name="username" id="username">
+          <label for="username">Имя пользователя</label>
+        </div>
+        <div class="input-field">
+          <input type="password" name="password" id="password">
+          <label for="password">Пароль</label>
+        </div>
+        <div class="row right-align" style="margin-top:20px;">
+          <button type="submit" class="btn waves-effect"
+                  style="background-color:#FFC700; color:#000;">
+            Войти
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
 </main>
 
+<footer class="page-footer" style="background-color:#0019ff;">
+  <div class="container">
+    <div class="row">
+      <div class="col s12" style="color:#FFC700;">
+        © 2024 Student Library Login
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 </body>
 </html>

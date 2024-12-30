@@ -1,52 +1,88 @@
 document.addEventListener('DOMContentLoaded', () => {
+  // Теперь мы используем data-id, чтобы корректно формировать /download/<id>
+  const bookItems = document.querySelectorAll('.book-item');
+  bookItems.forEach(card => {
+    card.addEventListener('click', () => {
+      const bookId = card.dataset.id || '';
+      const coverEl = card.querySelector('.book-cover');
+      const coverSrc = coverEl ? coverEl.getAttribute('src') : '';
+
+      const titleEl = card.querySelector('.card-title');
+      const title = titleEl ? titleEl.innerText : '';
+
+      const author = card.querySelector('p:nth-of-type(1)')?.innerText || '';
+      const year = card.querySelector('p:nth-of-type(2)')?.innerText || '';
+      const lang = card.querySelector('p:nth-of-type(3)')?.innerText || '';
+      const desc = card.dataset.description || '';
+
+      // Заполняем модалку
+      document.getElementById('modal-cover').src = coverSrc;
+      document.getElementById('modal-title').textContent = title;
+      document.getElementById('modal-author').textContent = author;
+      document.getElementById('modal-year').textContent = year;
+      document.getElementById('modal-lang').textContent = lang;
+      document.getElementById('modal-description').textContent = desc;
+
+      // Формируем ссылку для скачивания
+      const downloadLink = document.getElementById('download-link');
+      if (bookId) {
+        downloadLink.href = `/download/${bookId}`;
+      } else {
+        downloadLink.href = '#'; 
+      }
+
+      // Открываем модалку Materialize
+      const modalEl = document.getElementById('modal-overlay');
+      const instance = M.Modal.getInstance(modalEl);
+      instance.open();
+    });
+  });
+
+  // Фильтры + Поиск
   const directionFilter = document.getElementById('direction-filter');
   const typeFilter = document.getElementById('type-filter');
   const yearFilter = document.getElementById('year-filter');
   const langFilter = document.getElementById('lang-filter');
-
+  const searchTitle = document.getElementById('search-title');
   const resetBtn = document.getElementById('reset-filters');
   const bookList = document.getElementById('book-list');
-
-  // Модальное окно
-  const modalOverlay = document.getElementById('modal-overlay');
-  const modalClose = document.getElementById('modal-close');
-  const modalCover = document.getElementById('modal-cover');
-  const modalTitle = document.getElementById('modal-title');
-  const modalAuthor = document.getElementById('modal-author');
-  const modalYear = document.getElementById('modal-year');
-  const modalLang = document.getElementById('modal-lang');
-  const modalDescription = document.getElementById('modal-description');
-  const downloadLink = document.getElementById('download-link');
 
   function applyFilters() {
     const dirVal = directionFilter.value.trim().toLowerCase();
     const typeVal = typeFilter.value.trim().toLowerCase();
     const yearVal = yearFilter.value.trim();
     const langVal = langFilter.value.trim().toLowerCase();
+    const searchVal = searchTitle.value.trim().toLowerCase();
 
     const books = bookList.querySelectorAll('.book-item');
     books.forEach(book => {
-      const bookDir = book.dataset.direction;
-      const bookType = book.dataset.type;
-      const bookYear = book.dataset.year;
-      const bookLang = book.dataset.lang;
+      const bookDir = book.dataset.direction || '';
+      const bookType = book.dataset.type || '';
+      const bookYear = book.dataset.year || '';
+      const bookLang = book.dataset.lang || '';
+      const cardTitle = book.querySelector('.card-title')?.innerText.toLowerCase() || '';
 
       let show = true;
-      if (dirVal && bookDir !== dirVal) show = false;
-      if (typeVal && bookType !== typeVal) show = false;
+
+      if (dirVal && !bookDir.includes(dirVal)) show = false;
+      if (typeVal && !bookType.includes(typeVal)) show = false;
       if (yearVal && bookYear !== yearVal) show = false;
       if (langVal && bookLang !== langVal) show = false;
 
-      book.style.display = show ? 'flex' : 'none';
+      if (searchVal && !cardTitle.includes(searchVal)) {
+        show = false;
+      }
+
+      book.style.display = show ? '' : 'none';
     });
   }
 
-  // Сброс
   resetBtn.addEventListener('click', () => {
     directionFilter.value = "";
     typeFilter.value = "";
     yearFilter.value = "";
     langFilter.value = "";
+    searchTitle.value = "";
     applyFilters();
   });
 
@@ -54,51 +90,5 @@ document.addEventListener('DOMContentLoaded', () => {
   typeFilter.addEventListener('change', applyFilters);
   yearFilter.addEventListener('input', applyFilters);
   langFilter.addEventListener('change', applyFilters);
-
-  // Кнопки "Подробнее"
-  const detailButtons = document.querySelectorAll('.details-btn');
-  detailButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const bookItem = btn.closest('.book-item');
-      if (!bookItem) return;
-
-      const bookId = btn.dataset.id; 
-      const coverSrc = bookItem.querySelector('.book-cover')?.getAttribute('src') || '';
-      const title = bookItem.querySelector('h3')?.innerText || '';
-      const authorLine = bookItem.querySelector('p:nth-of-type(1)')?.innerText || '';
-      const yearLine = bookItem.querySelector('p:nth-of-type(2)')?.innerText || '';
-      const langLine = bookItem.querySelector('p:nth-of-type(3)')?.innerText || '';
-
-      // Предположим, мы храним описание в data-атрибуте
-      const description = bookItem.dataset.description || '';
-
-      modalCover.src = coverSrc;
-      modalTitle.textContent = title;
-      modalAuthor.textContent = authorLine;
-      modalYear.textContent = yearLine;
-      modalLang.textContent = langLine;
-      modalDescription.textContent = description;
-
-      // Ссылка на скачивание
-      downloadLink.href = `/download/${bookId}`;
-
-      // Показать модалку
-      modalOverlay.style.display = 'flex';
-    });
-  });
-
-  modalClose.addEventListener('click', () => {
-    modalOverlay.style.display = 'none';
-  });
-  modalOverlay.addEventListener('click', (e) => {
-    if (e.target === modalOverlay) {
-      modalOverlay.style.display = 'none';
-    }
-  });
+  searchTitle.addEventListener('input', applyFilters);
 });
-
-
-
-const description = bookItem.dataset.description || '';
-modalDescription.textContent = description;
-
