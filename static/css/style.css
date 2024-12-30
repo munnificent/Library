@@ -1,0 +1,220 @@
+/* style.css — стили для главной (каталог) */
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Open Sans", sans-serif;
+  background: #f9f9f9;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  background-color: #2d9cdb;
+  color: #fff;
+  padding: 0 20px;
+  height: 60px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+.logo {
+  font-weight: bold;
+  font-size: 20px;
+}
+.main-nav {
+  margin-left: auto;
+}
+.main-nav a {
+  color: #fff;
+  text-decoration: none;
+  margin: 0 15px;
+  font-weight: 600;
+}
+.main-nav a:hover {
+  text-decoration: underline;
+}
+
+.container {
+  max-width: 1000px;
+  margin: 20px auto;
+  padding: 15px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 10px;
+}
+.filter-item {
+  margin-right: 20px;
+  margin-bottom: 10px;
+}
+.filter-reset-btn {
+  height: 40px;
+  padding: 0 15px;
+  background: #777;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  color: #fff;
+  font-weight: 600;
+}
+.filter-reset-btn:hover {
+  background: #555;
+}
+
+.book-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.book-item {
+  width: calc(50% - 20px);
+  background: #fafafa;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  display: flex;
+  padding: 10px;
+  transition: box-shadow 0.2s ease;
+}
+.book-item:hover {
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+.book-cover {
+  max-width: 100px;
+  max-height: 140px;
+  margin-right: 15px;
+  object-fit: cover;
+}
+.book-info h3 {
+  margin: 0;
+  font-size: 18px;
+}
+.book-info p {
+  margin: 5px 0;
+}
+.details-btn {
+  margin-top: 10px;
+  padding: 6px 12px;
+  background: #2d9cdb;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  border-radius: 3px;
+  font-weight: 600;
+}
+.details-btn:hover {
+  background: #1a85bc;
+}
+
+/* Модальное окно */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(49, 49, 49, 0.65);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.modal-window {
+  background: #fff;
+  width: 600px;
+  padding: 20px;
+  position: relative;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+.modal-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: transparent;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  opacity: 0.7;
+}
+.modal-close:hover {
+  opacity: 1;
+}
+.modal-cover {
+  float: left;
+  width: 150px;
+  height: auto;
+  margin-right: 20px;
+  object-fit: cover;
+}
+.download-btn {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 8px 12px;
+  background: #2d9cdb;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 3px;
+  font-weight: 600;
+}
+.download-btn:hover {
+  background: #1a85bc;
+}
+.modal-content:after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+.footer {
+  margin-top: 20px;
+  padding: 10px;
+  text-align: center;
+  background: #eee;
+  border-top: 1px solid #ccc;
+}
+
+/* ДОБАВКА В style.css ДЛЯ HERO-БЛОКА */
+
+.hero {
+  width: 100%;
+  height: 400px;
+  background: url("https://cdn.pixabay.com/photo/2016/01/19/17/59/library-1147815_960_720.jpg") center/cover no-repeat;
+  position: relative;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.hero-content {
+  text-align: center;
+  max-width: 600px;
+  background: rgba(0,0,0,0.5);
+  padding: 30px;
+  border-radius: 8px;
+}
+.hero-content h1 {
+  font-size: 36px;
+  margin: 0 0 10px;
+}
+.hero-content p {
+  font-size: 18px;
+}
+.hero-btn {
+  margin-top: 20px;
+  padding: 12px 24px;
+  background: #2d9cdb;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 16px;
+}
+.hero-btn:hover {
+  background: #1a85bc;
+}

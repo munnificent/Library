@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Админ-панель</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+<body>
+
+<header class="header">
+  <div class="logo">Админ-панель</div>
+  <nav class="main-nav">
+    <a href="{{ url_for('index') }}">Главная</a>
+    <a href="{{ url_for('logout') }}">Выйти</a>
+  </nav>
+</header>
+
+<main class="container">
+  <h1>Добавить новую книгу</h1>
+  
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <ul class="flash-messages">
+        {% for category, message in messages %}
+          <li class="{{ category }}">{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  {% endwith %}
+
+  <form action="{{ url_for('admin') }}" method="POST" enctype="multipart/form-data" class="admin-form">
+    <div class="form-group">
+      <label>Название книги *</label>
+      <input type="text" name="title" required>
+    </div>
+    <div class="form-group">
+      <label>Автор *</label>
+      <input type="text" name="author" required>
+    </div>
+    <div class="form-group">
+      <label>Направление</label>
+      <select name="direction" required>
+        <option value="Право">Право</option>
+        <option value="Экономика">Экономика</option>
+        <option value="Математика">Математика</option>
+        <option value="Физика">Физика</option>
+        <option value="Информатика">Информатика</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Тип материала</label>
+      <select name="material_type" required>
+        <option value="Учебник">Учебник</option>
+        <option value="Монография">Монография</option>
+        <option value="Сборник">Сборник</option>
+        <option value="Периодические издания">Периодические издания</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Год издания</label>
+      <input type="number" name="year">
+    </div>
+    <div class="form-group">
+      <label>Язык</label>
+      <select name="language">
+        <option value="Русский">Русский</option>
+        <option value="Английский">Английский</option>
+        <option value="Другой">Другой</option>
+      </select>
+    </div>
+    <div class="form-group" style="width: 100%;">
+      <label>Описание (краткое)</label>
+      <textarea name="description" rows="3" style="resize:none;"></textarea>
+    </div>
+    <div class="form-group">
+      <label>Обложка (фото):</label>
+      <input type="file" name="cover_file" accept="image/*">
+    </div>
+    <div class="form-group">
+      <label>Файл для скачивания:</label>
+      <input type="file" name="download_file" accept=".pdf,.doc,.docx,.epub,.fb2">
+    </div>
+    <button type="submit">Добавить книгу</button>
+  </form>
+
+  <h2>Список книг</h2>
+  <table class="book-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Название</th>
+        <th>Автор</th>
+        <th>Направление</th>
+        <th>Год</th>
+        <th>Язык</th>
+        <th>Действия</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for book in books %}
+      <tr>
+        <td>{{ book.id }}</td>
+        <td>{{ book.title }}</td>
+        <td>{{ book.author }}</td>
+        <td>{{ book.direction }}</td>
+        <td>{{ book.year }}</td>
+        <td>{{ book.language }}</td>
+        <td>
+          <!-- Кнопка Удалить -->
+          <form action="{{ url_for('delete_book', book_id=book.id) }}" method="POST" style="display:inline;">
+            <button type="submit" class="delete-btn" onclick="return confirm('Удалить книгу?');">Удалить</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</main>
+
+<script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+</body>
+</html>
