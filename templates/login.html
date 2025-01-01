@@ -1,24 +1,46 @@
 <!DOCTYPE html>
 <html lang="ru">
-<head>
-  <meta charset="UTF-8">
-  <title>Вход</title>
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
-  <style>
-    /* Дополнительная стилизация страницы входа */
-    body {
-      display: flex;
-      min-height: 100vh;
-      flex-direction: column;
-    }
-    main {
-      flex: 1 0 auto;
-    }
-  </style>
-</head>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход</title>
+    
+    <!-- Предварительное подключение к Google Fonts для ускорения загрузки -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    
+    <!-- Materialize CSS с атрибутами безопасности -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+          integrity="sha512-UJfAaOlIRtdR+0P6C3KUoTDAxVTuy3lnSXLyLKlHYJlcSU8Juge/mjeaxDNMlw9LgeIotgz5FP8eUQPhX1q10A=="
+          crossorigin="anonymous"
+          referrerpolicy="no-referrer" />
+    
+    <!-- Пользовательский CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='icon/icon.png') }}">
+    <!-- Дополнительный Favicon в формате ICO для лучшей совместимости -->
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='icon/favicon.ico') }}">
+    
+    <!-- Встроенные стили (опционально) -->
+    <style>
+      /* Дополнительная стилизация страницы входа */
+      body {
+        display: flex;
+        min-height: 100vh;
+        flex-direction: column;
+      }
+      main {
+        flex: 1 0 auto;
+      }
+    </style>
+  </head>
+  
 <body>
 
 <nav style="background-color:#0019ff;">
