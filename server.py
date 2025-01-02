@@ -35,13 +35,14 @@ def init_db():
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             title TEXT NOT NULL,
             author TEXT NOT NULL,
-            direction TEXT NOT NULL,    -- (Учебные материалы, Научная литература и т.д.)
-            material_type TEXT NOT NULL,-- (Учебники, Монографии и т.д.)
+            direction TEXT NOT NULL,
+            material_type TEXT NOT NULL,
             year INTEGER,
             language TEXT,
             description TEXT,
             image_path TEXT,
-            file_path TEXT
+            file_path TEXT,
+            original_filename TEXT  -- <--- новое поле
         );''')
         conn.commit()
         conn.close()
@@ -102,6 +103,8 @@ def admin():
 
         cover_filename = None
         download_filename = None
+        original_filename = None
+
 
         # Уникальное имя обложки
         if cover_file and cover_file.filename.strip():
@@ -113,10 +116,18 @@ def admin():
 
         # Уникальное имя файла для скачивания
         if download_file and download_file.filename.strip():
-            basefilename2 = secure_filename(download_file.filename)
-            ext2 = os.path.splitext(basefilename2)[1]
-            unique_name2 = f"{uuid.uuid4().hex}{ext2}"
-            download_filename = f"uploads/{unique_name2}"
+            # Сохраняем ОРИГИНАЛЬНОЕ имя в переменную
+            original_filename = download_file.filename  # То, что загрузил пользователь
+
+            # Генерация уникального имени
+            basefilename = secure_filename(download_file.filename)  # "Instrukciya.pdf"
+            fn, ext = os.path.splitext(basefilename)
+            if not ext:
+                # Если расширения нет, допустим ставим .pdf
+                ext = ".pdf"
+
+            unique_name = f"{uuid.uuid4().hex}{ext}"
+            download_filename = f"uploads/{unique_name}"
             download_file.save(os.path.join('static', download_filename))
 
         if not title or not author:
@@ -124,12 +135,16 @@ def admin():
             return redirect(url_for('admin'))
 
         conn = get_db_connection()
+         # Далее сохраняем всё в БД
         conn.execute("""
-            INSERT INTO books
-            (title, author, direction, material_type, year, language, description, image_path, file_path)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-        """, (title, author, direction, material_type, year, language, description,
-              cover_filename, download_filename))
+                INSERT INTO books
+                (title, author, direction, material_type, year, language, description, 
+                image_path, file_path, original_filename)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """, (
+                title, author, direction, material_type, year, language, description,
+                cover_filename, download_filename, original_filename
+            ))
         conn.commit()
         conn.close()
 
@@ -170,12 +185,27 @@ def delete_book(book_id):
 @app.route('/download/<int:book_id>')
 def download_book(book_id):
     conn = get_db_connection()
-    book = conn.execute("SELECT file_path FROM books WHERE id=?", (book_id,)).fetchone()
+    book = conn.execute("""
+        SELECT file_path, original_filename 
+        FROM books 
+        WHERE id = ?
+    """, (book_id,)).fetchone()
     conn.close()
+
     if book and book['file_path']:
-        return send_from_directory(directory='static', path=book['file_path'], as_attachment=True)
+        server_path = book['file_path']  # например "uploads/e9a79ae7cf24435b89ccb6dc0102ec2a.pdf"
+        orig_name = book['original_filename'] or "Без названия.pdf"
+
+        return send_from_directory(
+            directory='static',
+            path=server_path,
+            as_attachment=True,
+            # Здесь указываем, под каким именем хотим, чтобы скачивался файл
+            download_name=orig_name
+        )
     else:
         return "Файл не найден", 404
+
 
 # ===== Бэкап =====
 @app.route('/backup', methods=['POST'])
