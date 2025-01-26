@@ -17,22 +17,27 @@ document.addEventListener('DOMContentLoaded', () => {
   let allBooks = [];
   let filteredBooks = [];
 
-  // 1. Загрузить books.json
-  fetch('books.json')
-    .then(resp => resp.json())
-    .then(data => {
+  // 1. Загрузка books.json (async/await)
+  async function fetchBooks() {
+    try {
+      const resp = await fetch('books.json');
+      if (!resp.ok) {
+        throw new Error(`Ошибка сети: статус ${resp.status}`);
+      }
+      const data = await resp.json();
       allBooks = data;
-      filteredBooks = allBooks; // по умолчанию всё
+      filteredBooks = [...allBooks]; // по умолчанию отображаем все
       renderPage();
-    })
-    .catch(err => {
+    } catch (err) {
       console.error("Ошибка при загрузке books.json:", err);
       bookListEl.innerHTML = "<p style='color:red;'>Не удалось загрузить книги.</p>";
-    });
+    }
+  }
+
+  fetchBooks();
 
   // 2. Рендер текущей страницы
   function renderPage() {
-    // Фильтруем + отображаем только нужную страницу
     const startIndex = (currentPage - 1) * booksPerPage;
     const endIndex = startIndex + booksPerPage;
     const pageBooks = filteredBooks.slice(startIndex, endIndex);
@@ -41,9 +46,11 @@ document.addEventListener('DOMContentLoaded', () => {
     renderPagination();
   }
 
-  // 3. Функция отрисовки карточек
+  // 3. Функция отрисовки карточек (с DocumentFragment для оптимизации)
   function renderBooks(books) {
     bookListEl.innerHTML = '';
+    const fragment = document.createDocumentFragment();
+
     books.forEach(book => {
       const col = document.createElement('div');
       col.className = "col s12 m6";
@@ -52,22 +59,23 @@ document.addEventListener('DOMContentLoaded', () => {
       card.className = "card hoverable";
       card.style.cursor = 'pointer';
 
-      // Сохраняем data-* для фильтра, не так уж нужно, но можно
+      // Сохраняем data-* (если нужно для дополнительного функционала)
       card.dataset.direction = book.direction.toLowerCase();
       card.dataset.type = book.material_type.toLowerCase();
       card.dataset.year = book.year;
       card.dataset.lang = book.language.toLowerCase();
 
+      // Обработчик клика (открытие модалки)
       card.addEventListener('click', () => showModal(book));
 
       // card-image
       const cardImage = document.createElement('div');
       cardImage.className = "card-image";
+
       const coverImg = document.createElement('img');
       coverImg.className = "book-cover";
-      coverImg.src = book.cover || "https://via.placeholder.com/400x250?text=No+Cover";
+      coverImg.src = book.cover || "https://placehold.co/600x900/EEE/31343C?font=lato&text=обложка\nСКОРО";
       cardImage.appendChild(coverImg);
-      card.appendChild(cardImage);
 
       // card-content
       const cardContent = document.createElement('div');
@@ -78,30 +86,37 @@ document.addEventListener('DOMContentLoaded', () => {
       titleSpan.className = "card-title";
       titleSpan.style.color = "#0019ff";
       titleSpan.textContent = book.title;
-      cardContent.appendChild(titleSpan);
 
       const pAuthor = document.createElement('p');
       pAuthor.textContent = "Автор: " + book.author;
-      cardContent.appendChild(pAuthor);
 
       const pYear = document.createElement('p');
       pYear.textContent = "Год: " + book.year;
-      cardContent.appendChild(pYear);
 
       const pLang = document.createElement('p');
       pLang.textContent = "Язык: " + book.language;
-      cardContent.appendChild(pLang);
 
       const pCat = document.createElement('p');
       pCat.style.color = "#777";
       pCat.style.fontSize = "14px";
       pCat.textContent = book.direction + " / " + book.material_type;
+
+      // Сборка карточки
+      cardContent.appendChild(titleSpan);
+      cardContent.appendChild(pAuthor);
+      cardContent.appendChild(pYear);
+      cardContent.appendChild(pLang);
       cardContent.appendChild(pCat);
 
+      card.appendChild(cardImage);
       card.appendChild(cardContent);
       col.appendChild(card);
-      bookListEl.appendChild(col);
+
+      fragment.appendChild(col);
     });
+
+    // Единовременное добавление в DOM
+    bookListEl.appendChild(fragment);
   }
 
   // 4. Модалка "Подробнее"
@@ -116,9 +131,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Кнопки скачивания
     const dlButtons = document.getElementById('download-buttons');
-    dlButtons.innerHTML = ''; // очищаем
+    dlButtons.innerHTML = '';
 
-    // fileLink (локальный)
+    // fileLink (локально)
     if (book.fileLink) {
       const localBtn = document.createElement('a');
       localBtn.className = "btn waves-effect waves-light";
@@ -131,7 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
       dlButtons.appendChild(localBtn);
     }
 
-    // cloudLink (облачный)
+    // cloudLink (облачно)
     if (book.cloudLink) {
       const cloudBtn = document.createElement('a');
       cloudBtn.className = "btn waves-effect waves-light";
@@ -142,24 +157,27 @@ document.addEventListener('DOMContentLoaded', () => {
       dlButtons.appendChild(cloudBtn);
     }
 
+    // Открываем модалку
     const modalEl = document.getElementById('modal-overlay');
     const instance = M.Modal.getInstance(modalEl);
     instance.open();
   }
 
-  // 5. Пагинация
+  // 5. Пагинация (с DocumentFragment для оптимизации)
   function renderPagination() {
     paginationEl.innerHTML = '';
     const totalPages = Math.ceil(filteredBooks.length / booksPerPage);
 
-    // Если всего 1 страница, скрываем пагинацию
     if (totalPages <= 1) return;
+
+    const fragment = document.createDocumentFragment();
 
     for (let i = 1; i <= totalPages; i++) {
       const pageLink = document.createElement('button');
       pageLink.className = "btn-small waves-effect";
       pageLink.style.marginRight = "5px";
       pageLink.textContent = i;
+
       if (i === currentPage) {
         pageLink.style.backgroundColor = "#FFC700";
         pageLink.style.color = "#000";
@@ -173,8 +191,10 @@ document.addEventListener('DOMContentLoaded', () => {
         renderPage();
       });
 
-      paginationEl.appendChild(pageLink);
+      fragment.appendChild(pageLink);
     }
+
+    paginationEl.appendChild(fragment);
   }
 
   // 6. Фильтрация
@@ -186,29 +206,31 @@ document.addEventListener('DOMContentLoaded', () => {
     const searchVal = searchTitle.value.trim().toLowerCase();
 
     filteredBooks = allBooks.filter(book => {
-      if (dirVal && !book.direction.toLowerCase().includes(dirVal)) return false;
-      if (typeVal && !book.material_type.toLowerCase().includes(typeVal)) return false;
-      if (yearVal && String(book.year) !== yearVal) return false;
-      if (langVal && book.language.toLowerCase() !== langVal) return false;
-      if (searchVal && !book.title.toLowerCase().includes(searchVal)) return false;
-      return true;
+      const matchDirection = !dirVal || book.direction.toLowerCase().includes(dirVal);
+      const matchType = !typeVal || book.material_type.toLowerCase().includes(typeVal);
+      const matchYear = !yearVal || String(book.year) === yearVal;
+      const matchLang = !langVal || book.language.toLowerCase() === langVal;
+      const matchTitle = !searchVal || book.title.toLowerCase().includes(searchVal);
+      return matchDirection && matchType && matchYear && matchLang && matchTitle;
     });
 
-    currentPage = 1; // reset to first page
+    currentPage = 1;
     renderPage();
   }
 
+  // Сброс фильтров
   resetBtn.addEventListener('click', () => {
     directionFilter.value = "";
     typeFilter.value = "";
     yearFilter.value = "";
     langFilter.value = "";
     searchTitle.value = "";
-    filteredBooks = allBooks;
+    filteredBooks = [...allBooks];
     currentPage = 1;
     renderPage();
   });
 
+  // Привязка обработчиков к фильтрам
   directionFilter.addEventListener('change', applyFilters);
   typeFilter.addEventListener('change', applyFilters);
   yearFilter.addEventListener('input', applyFilters);

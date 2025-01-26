@@ -11,7 +11,7 @@
   <meta property="og:title" content="Студенческая библиотека | Лучшие книги">
   <meta property="og:description" content="Откройте для себя мир книг в нашей обширной библиотеке.">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://library.munificent.net/">
+  <meta property="og:url" content="https://elibrary.munificent.net/">
   <meta property="og:image" content="https://library.munificent.net/preview.png">
   
   <!-- Ускоряем подключение шрифтов Google -->
@@ -23,45 +23,204 @@
   
   <!-- Подключаем Materialize CSS с Subresource Integrity -->
   <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
-          integrity="sha512-UJfAaOlIRtdR+0P6C3KUoTDAxVTuy3lnSXLyLKlHYJlcSU8Juge/mjeaxDNMlw9LgeIotgz5FP8eUQPhX1q10A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+        integrity="sha512-UJfAaOlIRtdR+0P6C3KUoTDAxVTuy3lnSXLyLKlHYJlcSU8Juge/mjeaxDNMlw9LgeIotgz5FP8eUQPhX1q10A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
   
   <!-- Подключаем собственные стили (желательно минифицированные) -->
   <link rel="stylesheet" href="css/style.css">
 
-
-  <link rel="apple-touch-icon" sizes="57x57" href="assets/icon//apple-icon-57x57.png">
-  <link rel="apple-touch-icon" sizes="60x60" href="assets/icon//apple-icon-60x60.png">
-  <link rel="apple-touch-icon" sizes="72x72" href="assets/icon//apple-icon-72x72.png">
-  <link rel="apple-touch-icon" sizes="76x76" href="assets/icon//apple-icon-76x76.png">
-  <link rel="apple-touch-icon" sizes="114x114" href="assets/icon//apple-icon-114x114.png">
-  <link rel="apple-touch-icon" sizes="120x120" href="assets/icon//apple-icon-120x120.png">
-  <link rel="apple-touch-icon" sizes="144x144" href="assets/icon//apple-icon-144x144.png">
-  <link rel="apple-touch-icon" sizes="152x152" href="assets/icon//apple-icon-152x152.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="assets/icon//apple-icon-180x180.png">
-  <link rel="icon" type="image/png" sizes="192x192"  href="assets/icon//android-icon-192x192.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/icon//favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="96x96" href="assets/icon//favicon-96x96.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="assets/icon//favicon-16x16.png">
+  <!-- Иконки -->
+  <link rel="apple-touch-icon" sizes="57x57" href="assets/icon/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="assets/icon/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="assets/icon/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="assets/icon/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="assets/icon/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="assets/icon/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="assets/icon/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="assets/icon/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/icon/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192"  href="assets/icon/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="assets/icon/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/icon/favicon-16x16.png">
   <link rel="icon" href="assets/icon/favicon.ico" sizes="any">
   <link rel="manifest" href="/manifest.json">
   <meta name="msapplication-TileColor" content="#ffffff">
   <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
   <meta name="theme-color" content="#ffffff">
+
+  <!-- Встроенные стили для адаптивного меню -->
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;900&display=swap");
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: "Poppins", sans-serif;
+    }
+
+    /* ШАПКА */
+    nav.navbar {
+      width: 100%;
+      background-color: #0019ff; /* фирменный синий */
+      box-shadow: 0 1px 4px rgb(146 161 176 / 15%);
+    }
+    .nav-container {
+      max-width: 1200px;
+      width: 90%;
+      margin: auto;
+      height: 62px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between; /* Логотип слева, меню справа */
+      position: relative;
+    }
+
+    /* Лого */
+    .logo h1 {
+      color: #FFC700;
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+
+    /* ЧЕКБОКС, управляющий меню (мобильный вид) */
+    .checkbox {
+      display: none; /* мы будем кликать на <label> */
+    }
+
+    /* "Гамбургер"-линии в label */
+    .hamburger-lines {
+      display: block;
+      height: 26px;
+      width: 32px;
+      position: absolute;
+      right: 15px;
+      top: 17px;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      cursor: pointer;
+    }
+    .hamburger-lines .line {
+      display: block;
+      height: 4px;
+      width: 100%;
+      border-radius: 10px;
+      background: #fff; /* Белые полоски */
+    }
+    .line1 {
+      transform-origin: 0% 0%;
+      transition: transform 0.4s ease-in-out;
+    }
+    .line2 {
+      transition: transform 0.2s ease-in-out;
+    }
+    .line3 {
+      transform-origin: 0% 100%;
+      transition: transform 0.4s ease-in-out;
+    }
+
+    /* Меню на мобильном — скрыто по умолчанию */
+    .menu-items {
+      position: absolute;
+      top: 62px; /* сразу под шапкой */
+      right: 0;
+      width: 100%;
+      background-color: #fff;
+      transform: translateY(-150%);
+      transition: transform 0.5s ease-in-out;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 1rem 0;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    .menu-items li {
+      list-style: none;
+      margin: 1rem 0;
+    }
+    .menu-items li a {
+      text-decoration: none;
+      color: #0019ff;
+      font-size: 1.2rem;
+      font-weight: 500;
+    }
+
+    /* При нажатии на чекбокс (через label) меню выезжает */
+    .checkbox:checked ~ .menu-items {
+      transform: translateY(0);
+    }
+    .checkbox:checked ~ label .line1 {
+      transform: rotate(45deg);
+    }
+    .checkbox:checked ~ label .line2 {
+      transform: scaleY(0);
+    }
+    .checkbox:checked ~ label .line3 {
+      transform: rotate(-45deg);
+    }
+
+    /* Десктоп (≥768px): гамбургер прячем, меню видим справа */
+    @media (min-width: 768px) {
+      label.hamburger-lines {
+        display: none;
+      }
+      .menu-items {
+        position: static;
+        transform: none;
+        background-color: transparent;
+        box-shadow: none;
+        flex-direction: row;
+        padding: 0;
+        width: auto;
+        margin-right: 0;
+      }
+      .menu-items li {
+        margin: 0 1rem;
+      }
+      .menu-items li a {
+        color: #fff; 
+        font-size: 1rem;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<!-- Навбар -->
-<nav style="background-color: #0019ff;">
-  <div class="nav-wrapper container">
-    <a href="https://library.munificent.net/" class="brand-logo">Библиотека</a>
-    <ul id="nav-mobile" class="right hide-on-med-and-down">
-      <li><a href="https://t.me/munificent_bot" target="_blank">Предложить свои книги</a></li>
+<!-- Адаптивное меню -->
+<nav class="navbar">
+  <div class="nav-container">
+    <!-- Логотип слева -->
+    <div class="logo">
+      <h1>Библиотека</h1>
+    </div>
+
+    <!-- Чекбокс (скрыт) и Label (гамбургер) -->
+    <input class="checkbox" type="checkbox" id="menu-toggle" />
+    <label for="menu-toggle" class="hamburger-lines">
+      <span class="line line1"></span>
+      <span class="line line2"></span>
+      <span class="line line3"></span>
+    </label>
+
+    <!-- Пункты меню -->
+    <ul class="menu-items">
+      <li><a href="https://elibrary.munificent.net/">Главная</a></li>
+      <li><a href="https://t.me/munificent_bot" target="_blank" rel="noopener">Предложить книгу</a></li>
+      <li><a href="#">Контакты</a></li>
+      <li><a href="#">О нас</a></li>
     </ul>
   </div>
 </nav>
 
+<!-- Шапка/заставка -->
 <div class="section no-pad-bot" style="background-color: #fff;">
   <div class="container">
     <br><br>
@@ -104,7 +263,6 @@
             <option value="практикумы">Практикумы</option>
             <option value="монографии">Монографии</option>
             <option value="диссертации">Диссертации</option>
-            <!-- ... -->
           </select>
         </div>
         <div class="col s12 m6 l2">
@@ -170,12 +328,15 @@
   <div class="container">
     <div class="row">
       <div class="col s12 m6">
-        <h5 style="color:#FFC700;">Студенческая библиотека </h5>
+        <h5 style="color:#FFC700;">Студенческая библиотека</h5>
         <p style="color:#fff;">Материалы по учебным дисциплинам, научной литературе, справочникам и т.д.</p>
       </div>
       <div class="col s12 m6 right-align" style="color:#FFC700;">
         <p>Разработка: ШизаПроджект</p>
-        <a href="https://t.me/munificent_bot" target="_blank" class="btn waves-effect waves-light" style="background-color:#FFC700; color:#000; margin-top:20px;">
+        <a href="https://t.me/munificent_bot" target="_blank"
+           class="btn waves-effect waves-light"
+           style="background-color:#FFC700; color:#000; margin-top:20px;"
+           rel="noopener">
           Предложить книги
         </a>
       </div>
@@ -186,27 +347,30 @@
   </div>
 </footer>
 
+<!-- Подключаем скрипты -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 <script src="js/script.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+  // Инициализация модальных окон из Materialize
   var modals = document.querySelectorAll('.modal');
   M.Modal.init(modals);
 });
 </script>
 <script>
+  // Регистрация Service Worker
   if ('serviceWorker' in navigator) {
-   window.addEventListener('load', function() {  
-     navigator.serviceWorker.register('/sw.js').then(
-       function(registration) {
-         // Registration was successful
-         console.log('ServiceWorker registration successful with scope: ', registration.scope); },
-       function(err) {
-         // registration failed :(
-         console.log('ServiceWorker registration failed: ', err);
-       });
-   });
+    window.addEventListener('load', function() {  
+      navigator.serviceWorker.register('/sw.js').then(
+        function(registration) {
+          console.log('ServiceWorker registration successful with scope:', registration.scope);
+        },
+        function(err) {
+          console.log('ServiceWorker registration failed:', err);
+        }
+      );
+    });
   }
-  </script>
+</script>
 </body>
 </html>
