@@ -37,5 +37,18 @@
     "cover": "assets/img/Н.П._Калашников_НАЧАЛА_ФИЗИКИ._Учебное_пособие_для_подготовкиz_к_ВУЗам_3_2254.jpg",
     "fileLink": "assets/files/Н.П._Калашников_НАЧАЛА_ФИЗИКИ._Учебное_пособие_для_подготовкиz_к_ВУЗам_3_2685.pdf",
     "cloudLink": "https://online.mephi.ru/courses/physics_origins/download/book.pdf"
+  },
+  {
+    "id": 4,
+    "title": "Сборник задач по курсу математического анализа 22ое издание",
+    "author": "Г.Н. Берман",
+    "direction": "Учебные материалы",
+    "material_type": "Учебники",
+    "year": "2001",
+    "language": "Русский",
+    "description": "Это популярный и проверенный временем сборник задач, используемый студентами вузов для изучения математического анализа.",
+    "cover": "assets/img/Г.Н._Берман_Сборник_задач_по_курсу_математического_анализа_22ое_издание_4_1996.jpg",
+    "fileLink": "",
+    "cloudLink": "https://drive.google.com/file/d/1kbA5LeC3AWVkIP4zqWR89BkNooNaGagA/view?usp=drivesdk"
   }
 ]

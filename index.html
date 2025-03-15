@@ -4,33 +4,27 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Студенческая библиотека | Лучшие книги в одном месте</title>
-  <meta name="description" content="Нужные книги доступные всем.">
+  <meta name="description" content="Нужные книги доступны всем.">
   <meta name="keywords" content="книги, библиотека, чтение, литература">
-  
-  <!-- Теги Open Graph -->
+
   <meta property="og:title" content="Студенческая библиотека | Лучшие книги">
   <meta property="og:description" content="Откройте для себя мир книг в нашей обширной библиотеке.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://elibrary.munificent.net/">
   <meta property="og:image" content="https://library.munificent.net/preview.png">
-  
-  <!-- Ускоряем подключение шрифтов Google -->
+
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="dns-prefetch" href="https://fonts.gstatic.com">
-  
-  <!-- Подключаем иконки Material Icons -->
+
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  
-  <!-- Подключаем Materialize CSS с Subresource Integrity -->
+
   <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
         integrity="sha512-UJfAaOlIRtdR+0P6C3KUoTDAxVTuy3lnSXLyLKlHYJlcSU8Juge/mjeaxDNMlw9LgeIotgz5FP8eUQPhX1q10A=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-  
-  <!-- Подключаем собственные стили (желательно минифицированные) -->
+
   <link rel="stylesheet" href="css/style.css">
 
-  <!-- Иконки -->
   <link rel="apple-touch-icon" sizes="57x57" href="assets/icon/apple-icon-57x57.png">
   <link rel="apple-touch-icon" sizes="60x60" href="assets/icon/apple-icon-60x60.png">
   <link rel="apple-touch-icon" sizes="72x72" href="assets/icon/apple-icon-72x72.png">
@@ -50,10 +44,9 @@
   <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
   <meta name="theme-color" content="#ffffff">
 
-  <!-- Встроенные стили для адаптивного меню -->
   <style>
     @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;900&display=swap");
-    
+
     * {
       margin: 0;
       padding: 0;
@@ -63,7 +56,7 @@
       font-family: "Poppins", sans-serif;
     }
 
-    /* ШАПКА */
+    /* Navigation Bar */
     nav.navbar {
       width: 100%;
       background-color: #0019ff; /* фирменный синий */
@@ -76,11 +69,11 @@
       height: 62px;
       display: flex;
       align-items: center;
-      justify-content: space-between; /* Логотип слева, меню справа */
+      justify-content: space-between; /* Logo on the left, menu on the right */
       position: relative;
     }
 
-    /* Лого */
+    /* Logo */
     .logo h1 {
       color: #FFC700;
       margin: 0;
@@ -88,12 +81,12 @@
       font-weight: 600;
     }
 
-    /* ЧЕКБОКС, управляющий меню (мобильный вид) */
+    /* Checkbox for mobile menu toggle */
     .checkbox {
-      display: none; /* мы будем кликать на <label> */
+      display: none; /* Label will be clicked */
     }
 
-    /* "Гамбургер"-линии в label */
+    /* Hamburger menu icon in label */
     .hamburger-lines {
       display: block;
       height: 26px;
@@ -112,7 +105,7 @@
       height: 4px;
       width: 100%;
       border-radius: 10px;
-      background: #fff; /* Белые полоски */
+      background: #fff; /* White lines */
     }
     .line1 {
       transform-origin: 0% 0%;
@@ -126,10 +119,10 @@
       transition: transform 0.4s ease-in-out;
     }
 
-    /* Меню на мобильном — скрыто по умолчанию */
+    /* Mobile menu - hidden by default */
     .menu-items {
       position: absolute;
-      top: 62px; /* сразу под шапкой */
+      top: 62px; /* Directly below the header */
       right: 0;
       width: 100%;
       background-color: #fff;
@@ -152,7 +145,7 @@
       font-weight: 500;
     }
 
-    /* При нажатии на чекбокс (через label) меню выезжает */
+    /* Show menu when checkbox is checked (via label) */
     .checkbox:checked ~ .menu-items {
       transform: translateY(0);
     }
@@ -166,7 +159,7 @@
       transform: rotate(-45deg);
     }
 
-    /* Десктоп (≥768px): гамбургер прячем, меню видим справа */
+    /* Desktop (≥768px): hide hamburger, show menu on the right */
     @media (min-width: 768px) {
       label.hamburger-lines {
         display: none;
@@ -185,7 +178,7 @@
         margin: 0 1rem;
       }
       .menu-items li a {
-        color: #fff; 
+        color: #fff;
         font-size: 1rem;
       }
     }
@@ -194,15 +187,12 @@
 
 <body>
 
-<!-- Адаптивное меню -->
 <nav class="navbar">
   <div class="nav-container">
-    <!-- Логотип слева -->
     <div class="logo">
       <h1>Библиотека</h1>
     </div>
 
-    <!-- Чекбокс (скрыт) и Label (гамбургер) -->
     <input class="checkbox" type="checkbox" id="menu-toggle" />
     <label for="menu-toggle" class="hamburger-lines">
       <span class="line line1"></span>
@@ -210,7 +200,6 @@
       <span class="line line3"></span>
     </label>
 
-    <!-- Пункты меню -->
     <ul class="menu-items">
       <li><a href="https://elibrary.munificent.net/">Главная</a></li>
       <li><a href="https://t.me/munificent_bot" target="_blank" rel="noopener">Предложить книгу</a></li>
@@ -220,7 +209,6 @@
   </div>
 </nav>
 
-<!-- Шапка/заставка -->
 <div class="section no-pad-bot" style="background-color: #fff;">
   <div class="container">
     <br><br>
@@ -234,7 +222,6 @@
   </div>
 </div>
 
-<!-- Фильтры и поиск -->
 <div class="container">
   <div class="card hoverable" style="border:1px solid #000;">
     <div class="card-content" style="color:#000;">
@@ -294,14 +281,11 @@
   </div>
 </div>
 
-<!-- Список книг -->
 <div class="container" style="margin-bottom: 50px;">
   <div class="row" id="book-list"></div>
-  <!-- Пагинация -->
   <div class="row center" id="pagination" style="margin-top:20px;"></div>
 </div>
 
-<!-- Модальное окно "Подробнее" -->
 <div id="modal-overlay" class="modal">
   <div class="modal-content" style="color:#000;">
     <a href="#!" class="modal-close btn-flat right">&times;</a>
@@ -316,14 +300,12 @@
         <p id="modal-lang"></p>
         <p id="modal-description" class="flow-text"></p>
         <p style="color:#777; font-size:14px;" id="modal-category"></p>
-        <!-- Кнопки для скачивания -->
         <div id="download-buttons"></div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Футер -->
 <footer class="page-footer" style="background-color:#0019ff;">
   <div class="container">
     <div class="row">
@@ -347,20 +329,17 @@
   </div>
 </footer>
 
-<!-- Подключаем скрипты -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 <script src="js/script.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-  // Инициализация модальных окон из Materialize
   var modals = document.querySelectorAll('.modal');
   M.Modal.init(modals);
 });
 </script>
 <script>
-  // Регистрация Service Worker
   if ('serviceWorker' in navigator) {
-    window.addEventListener('load', function() {  
+    window.addEventListener('load', function() {
       navigator.serviceWorker.register('/sw.js').then(
         function(registration) {
           console.log('ServiceWorker registration successful with scope:', registration.scope);
