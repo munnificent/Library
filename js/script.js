@@ -1,239 +1,264 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const bookListEl = document.getElementById('book-list');
-  const paginationEl = document.getElementById('pagination');
+// =================================
+//  Инициализация приложения
+// =================================
+document.addEventListener('DOMContentLoaded', init);
 
-  // Фильтры
-  const directionFilter = document.getElementById('direction-filter');
-  const typeFilter = document.getElementById('type-filter');
-  const yearFilter = document.getElementById('year-filter');
-  const langFilter = document.getElementById('lang-filter');
-  const searchTitle = document.getElementById('search-title');
-  const resetBtn = document.getElementById('reset-filters');
+function init() {
+    setupEventListeners();
+    fetchBooks();
+    initializeModals();
+    registerServiceWorker();
+}
 
-  // Пагинация
-  let currentPage = 1;
-  const booksPerPage = 20;
+// =================================
+//  Глобальное состояние (State)
+// =================================
+let allBooks = [];
+let filteredBooks = [];
+let currentPage = 1;
+const booksPerPage = 20;
 
-  let allBooks = [];
-  let filteredBooks = [];
-
-  // 1. Загрузка books.json (async/await)
-  async function fetchBooks() {
-    try {
-      const resp = await fetch('books.json');
-      if (!resp.ok) {
-        throw new Error(`Ошибка сети: статус ${resp.status}`);
-      }
-      const data = await resp.json();
-      allBooks = data;
-      filteredBooks = [...allBooks]; // по умолчанию отображаем все
-      renderPage();
-    } catch (err) {
-      console.error("Ошибка при загрузке books.json:", err);
-      bookListEl.innerHTML = "<p style='color:red;'>Не удалось загрузить книги.</p>";
+// =================================
+//  DOM-элементы
+// =================================
+const DOM = {
+    bookList: document.getElementById('book-list'),
+    pagination: document.getElementById('pagination'),
+    filters: {
+        direction: document.getElementById('direction-filter'),
+        type: document.getElementById('type-filter'),
+        year: document.getElementById('year-filter'),
+        lang: document.getElementById('lang-filter'),
+        search: document.getElementById('search-title'),
+    },
+    resetBtn: document.getElementById('reset-filters'),
+    modal: {
+        instance: null, // Инициализируется в initializeModals
+        element: document.getElementById('modal-book-details'),
+        cover: document.getElementById('modal-cover'),
+        title: document.getElementById('modal-title'),
+        author: document.getElementById('modal-author'),
+        year: document.getElementById('modal-year'),
+        lang: document.getElementById('modal-lang'),
+        description: document.getElementById('modal-description'),
+        category: document.getElementById('modal-category'),
+        downloadButtons: document.getElementById('download-buttons'),
     }
+};
+
+// =================================
+//  Основные функции
+// =================================
+
+/**
+ * Загружает данные о книгах из JSON-файла
+ */
+/**
+ * Загружает данные о книгах из JSON-файла
+ */
+async function fetchBooks() {
+  try {
+      // Убедитесь, что здесь именно 'books.json'
+      const response = await fetch('books.json'); 
+      if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      allBooks = await response.json();
+      filteredBooks = [...allBooks];
+      render(); // Первичная отрисовка
+  } catch (error) {
+      console.error("Ошибка при загрузке книг:", error);
+      DOM.bookList.innerHTML = `<p class="center-align red-text">Не удалось загрузить каталог книг. Пожалуйста, попробуйте обновить страницу.</p>`;
   }
+}
 
-  fetchBooks();
+/**
+ * Применяет фильтры и обновляет отображение
+ */
+function applyFilters() {
+    const filters = {
+        direction: DOM.filters.direction.value.trim().toLowerCase(),
+        type: DOM.filters.type.value.trim().toLowerCase(),
+        year: DOM.filters.year.value.trim(),
+        lang: DOM.filters.lang.value.trim().toLowerCase(),
+        search: DOM.filters.search.value.trim().toLowerCase(),
+    };
 
-  // 2. Рендер текущей страницы
-  function renderPage() {
+    filteredBooks = allBooks.filter(book => {
+        const matchDirection = !filters.direction || book.direction.toLowerCase().includes(filters.direction);
+        const matchType = !filters.type || book.material_type.toLowerCase().includes(filters.type);
+        const matchYear = !filters.year || String(book.year) === filters.year;
+        const matchLang = !filters.lang || book.language.toLowerCase() === filters.lang;
+        const matchTitle = !filters.search || book.title.toLowerCase().includes(filters.search);
+        return matchDirection && matchType && matchYear && matchLang && matchTitle;
+    });
+
+    currentPage = 1;
+    render();
+}
+
+/**
+ * Сбрасывает все фильтры к значениям по умолчанию
+ */
+function resetFilters() {
+    for (let key in DOM.filters) {
+        DOM.filters[key].value = '';
+    }
+    filteredBooks = [...allBooks];
+    currentPage = 1;
+    render();
+}
+
+// =================================
+//  Функции отрисовки (Render)
+// =================================
+
+/**
+ * Главная функция отрисовки, вызывающая дочерние
+ */
+function render() {
+    renderBooks();
+    renderPagination();
+}
+
+/**
+ * Отрисовывает карточки книг на текущей странице
+ */
+function renderBooks() {
     const startIndex = (currentPage - 1) * booksPerPage;
     const endIndex = startIndex + booksPerPage;
     const pageBooks = filteredBooks.slice(startIndex, endIndex);
 
-    renderBooks(pageBooks);
-    renderPagination();
-  }
-
-  // 3. Функция отрисовки карточек (с DocumentFragment для оптимизации)
-  function renderBooks(books) {
-    bookListEl.innerHTML = '';
-    const fragment = document.createDocumentFragment();
-
-    books.forEach(book => {
-      const col = document.createElement('div');
-      col.className = "col s12 m6";
-
-      const card = document.createElement('div');
-      card.className = "card hoverable";
-      card.style.cursor = 'pointer';
-
-      // Сохраняем data-* (если нужно для дополнительного функционала)
-      card.dataset.direction = book.direction.toLowerCase();
-      card.dataset.type = book.material_type.toLowerCase();
-      card.dataset.year = book.year;
-      card.dataset.lang = book.language.toLowerCase();
-
-      // Обработчик клика (открытие модалки)
-      card.addEventListener('click', () => showModal(book));
-
-      // card-image
-      const cardImage = document.createElement('div');
-      cardImage.className = "card-image";
-
-      const coverImg = document.createElement('img');
-      coverImg.className = "book-cover";
-      coverImg.src = book.cover || "https://placehold.co/600x900/EEE/31343C?font=lato&text=обложка\nСКОРО";
-      cardImage.appendChild(coverImg);
-
-      // card-content
-      const cardContent = document.createElement('div');
-      cardContent.className = "card-content";
-      cardContent.style.color = "#000";
-
-      const titleSpan = document.createElement('span');
-      titleSpan.className = "card-title";
-      titleSpan.style.color = "#0019ff";
-      titleSpan.textContent = book.title;
-
-      const pAuthor = document.createElement('p');
-      pAuthor.textContent = "Автор: " + book.author;
-
-      const pYear = document.createElement('p');
-      pYear.textContent = "Год: " + book.year;
-
-      const pLang = document.createElement('p');
-      pLang.textContent = "Язык: " + book.language;
-
-      const pCat = document.createElement('p');
-      pCat.style.color = "#777";
-      pCat.style.fontSize = "14px";
-      pCat.textContent = book.direction + " / " + book.material_type;
-
-      // Сборка карточки
-      cardContent.appendChild(titleSpan);
-      cardContent.appendChild(pAuthor);
-      cardContent.appendChild(pYear);
-      cardContent.appendChild(pLang);
-      cardContent.appendChild(pCat);
-
-      card.appendChild(cardImage);
-      card.appendChild(cardContent);
-      col.appendChild(card);
-
-      fragment.appendChild(col);
-    });
-
-    // Единовременное добавление в DOM
-    bookListEl.appendChild(fragment);
-  }
-
-  // 4. Модалка "Подробнее"
-  function showModal(book) {
-    document.getElementById('modal-cover').src = book.cover || "";
-    document.getElementById('modal-title').textContent = book.title;
-    document.getElementById('modal-author').textContent = "Автор: " + book.author;
-    document.getElementById('modal-year').textContent = "Год: " + book.year;
-    document.getElementById('modal-lang').textContent = "Язык: " + book.language;
-    document.getElementById('modal-description').textContent = book.description || "";
-    document.getElementById('modal-category').textContent = book.direction + " / " + book.material_type;
-
-    // Кнопки скачивания
-    const dlButtons = document.getElementById('download-buttons');
-    dlButtons.innerHTML = '';
-
-    // fileLink (локально)
-    if (book.fileLink) {
-      const localBtn = document.createElement('a');
-      localBtn.className = "btn waves-effect waves-light";
-      localBtn.style.marginRight = "10px";
-      localBtn.style.backgroundColor = "#FFC700";
-      localBtn.style.color = "#000";
-      localBtn.textContent = "Скачать (локально)";
-      localBtn.href = book.fileLink;
-      localBtn.setAttribute('download', book.fileLink.split('/').pop());
-      dlButtons.appendChild(localBtn);
+    if (pageBooks.length === 0) {
+        DOM.bookList.innerHTML = `<p class="center-align grey-text">Книги по вашему запросу не найдены.</p>`;
+        return;
     }
+    
+    // Использование шаблонных строк для создания HTML
+    DOM.bookList.innerHTML = pageBooks.map(book => `
+        <div class="col s12 m6 l4">
+            <div class="card hoverable book-card" data-book-id="${book.id}">
+                <div class="card-image">
+                    <img src="${book.cover || 'assets/img/placeholder.png'}" alt="Обложка книги ${book.title}" class="book-cover">
+                    <span class="card-title">${book.title}</span>
+                </div>
+                <div class="card-content">
+                    <p><strong>Автор:</strong> ${book.author}</p>
+                    <p><strong>Год:</strong> ${book.year}</p>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
 
-    // cloudLink (облачно)
-    if (book.cloudLink) {
-      const cloudBtn = document.createElement('a');
-      cloudBtn.className = "btn waves-effect waves-light";
-      cloudBtn.style.backgroundColor = "#FFC700";
-      cloudBtn.style.color = "#000";
-      cloudBtn.textContent = "Скачать (облако)";
-      cloudBtn.href = book.cloudLink;
-      dlButtons.appendChild(cloudBtn);
-    }
-
-    // Открываем модалку
-    const modalEl = document.getElementById('modal-overlay');
-    const instance = M.Modal.getInstance(modalEl);
-    instance.open();
-  }
-
-  // 5. Пагинация (с DocumentFragment для оптимизации)
-  function renderPagination() {
-    paginationEl.innerHTML = '';
+/**
+ * Отрисовывает элементы пагинации
+ */
+function renderPagination() {
     const totalPages = Math.ceil(filteredBooks.length / booksPerPage);
+    DOM.pagination.innerHTML = '';
 
     if (totalPages <= 1) return;
 
-    const fragment = document.createDocumentFragment();
-
+    let paginationHTML = '';
     for (let i = 1; i <= totalPages; i++) {
-      const pageLink = document.createElement('button');
-      pageLink.className = "btn-small waves-effect";
-      pageLink.style.marginRight = "5px";
-      pageLink.textContent = i;
-
-      if (i === currentPage) {
-        pageLink.style.backgroundColor = "#FFC700";
-        pageLink.style.color = "#000";
-      } else {
-        pageLink.style.backgroundColor = "#0019ff";
-        pageLink.style.color = "#fff";
-      }
-
-      pageLink.addEventListener('click', () => {
-        currentPage = i;
-        renderPage();
-      });
-
-      fragment.appendChild(pageLink);
+        const activeClass = (i === currentPage) ? 'brand-bg-yellow black-text' : 'brand-bg-blue white-text';
+        paginationHTML += `<button class="btn-small waves-effect ${activeClass}" data-page="${i}">${i}</button>`;
     }
+    DOM.pagination.innerHTML = paginationHTML;
+}
 
-    paginationEl.appendChild(fragment);
+
+/**
+ * Показывает модальное окно с деталями о книге
+ * @param {string} bookId - ID книги для отображения
+ */
+function showModal(bookId) {
+  const book = allBooks.find(b => String(b.id) === String(bookId));
+  if (!book) return;
+
+  DOM.modal.cover.src = book.cover || 'assets/img/placeholder.png';
+  DOM.modal.title.textContent = book.title;
+  DOM.modal.author.textContent = `Автор: ${book.author}`;
+  DOM.modal.year.textContent = `Год: ${book.year}`;
+  DOM.modal.lang.textContent = `Язык: ${book.language}`;
+  DOM.modal.description.textContent = book.description || 'Описание отсутствует.';
+  DOM.modal.category.textContent = `${book.direction} / ${book.material_type}`;
+
+  // --- ИСПРАВЛЕННАЯ ЛОГИКА ГЕНЕРАЦИИ КНОПОК ---
+  DOM.modal.downloadButtons.innerHTML = ''; // Очищаем контейнер
+
+  // 1. Проверяем наличие локального файла
+  if (book.fileLink) {
+      DOM.modal.downloadButtons.innerHTML += `
+          <a href="${book.fileLink}" class="btn waves-effect waves-light brand-bg-yellow black-text" download>
+              Скачать (файл)
+          </a>`;
   }
+  
+  // 2. Проверяем наличие облачной ссылки
+  if (book.cloudLink) {
+      DOM.modal.downloadButtons.innerHTML += `
+          <a href="${book.cloudLink}" target="_blank" rel="noopener" class="btn waves-effect waves-light brand-bg-blue white-text" style="margin-left: 10px;">
+              Открыть (облако)
+          </a>`;
+  }
+  // --- КОНЕЦ ИСПРАВЛЕНИЯ ---
 
-  // 6. Фильтрация
-  function applyFilters() {
-    const dirVal = directionFilter.value.trim().toLowerCase();
-    const typeVal = typeFilter.value.trim().toLowerCase();
-    const yearVal = yearFilter.value.trim();
-    const langVal = langFilter.value.trim().toLowerCase();
-    const searchVal = searchTitle.value.trim().toLowerCase();
+  DOM.modal.instance.open();
+}
 
-    filteredBooks = allBooks.filter(book => {
-      const matchDirection = !dirVal || book.direction.toLowerCase().includes(dirVal);
-      const matchType = !typeVal || book.material_type.toLowerCase().includes(typeVal);
-      const matchYear = !yearVal || String(book.year) === yearVal;
-      const matchLang = !langVal || book.language.toLowerCase() === langVal;
-      const matchTitle = !searchVal || book.title.toLowerCase().includes(searchVal);
-      return matchDirection && matchType && matchYear && matchLang && matchTitle;
+// =================================
+//  Настройка обработчиков событий
+// =================================
+function setupEventListeners() {
+    Object.values(DOM.filters).forEach(filter => {
+        filter.addEventListener('input', applyFilters);
+        filter.addEventListener('change', applyFilters);
     });
 
-    currentPage = 1;
-    renderPage();
-  }
+    DOM.resetBtn.addEventListener('click', resetFilters);
 
-  // Сброс фильтров
-  resetBtn.addEventListener('click', () => {
-    directionFilter.value = "";
-    typeFilter.value = "";
-    yearFilter.value = "";
-    langFilter.value = "";
-    searchTitle.value = "";
-    filteredBooks = [...allBooks];
-    currentPage = 1;
-    renderPage();
-  });
+    // Делегирование событий для кликов по карточкам
+    DOM.bookList.addEventListener('click', (event) => {
+        const card = event.target.closest('.book-card');
+        if (card && card.dataset.bookId) {
+            showModal(card.dataset.bookId);
+        }
+    });
 
-  // Привязка обработчиков к фильтрам
-  directionFilter.addEventListener('change', applyFilters);
-  typeFilter.addEventListener('change', applyFilters);
-  yearFilter.addEventListener('input', applyFilters);
-  langFilter.addEventListener('change', applyFilters);
-  searchTitle.addEventListener('input', applyFilters);
-});
+    // Делегирование событий для пагинации
+    DOM.pagination.addEventListener('click', (event) => {
+        if (event.target.tagName === 'BUTTON' && event.target.dataset.page) {
+            currentPage = Number(event.target.dataset.page);
+            render();
+            window.scrollTo(0, 0); // Прокрутка вверх при смене страницы
+        }
+    });
+}
+
+// =================================
+//  Сервисные функции (PWA, Modals)
+// =================================
+
+/**
+ * Инициализирует модальные окна Materialize
+ */
+function initializeModals() {
+    const modalElements = document.querySelectorAll('.modal');
+    M.Modal.init(modalElements);
+    DOM.modal.instance = M.Modal.getInstance(DOM.modal.element);
+}
+
+/**
+ * Регистрирует Service Worker для PWA
+ */
+function registerServiceWorker() {
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js')
+                .then(registration => console.log('ServiceWorker registration successful:', registration.scope))
+                .catch(err => console.log('ServiceWorker registration failed:', err));
+        });
+    }
+}

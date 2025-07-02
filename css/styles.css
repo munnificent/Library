@@ -1,10 +1,234 @@
-
-
-.book-cover {
-  max-height: 200px;
-  object-fit: cover;
+/* =================================
+   Глобальные стили и новая палитра
+   ================================= */
+   :root {
+    --bg-dark-blue: #1a2238;      /* Основной фон */
+    --card-bg-blue: #232f4c;      /* Фон для карточек */
+    --accent-gold: #fca311;       /* Акцентный золотой */
+    --text-light-cream: #f2f2f2;  /* Основной текст */
+    --neutral-gray: #9da3b0;      /* Второстепенный текст */
 }
 
-.card-title {
-  font-weight: bold;
+body {
+    font-family: "Poppins", sans-serif;
+    background-color: var(--bg-dark-blue);
+    color: var(--text-light-cream);
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+main {
+    flex: 1 0 auto;
+}
+
+h1, h2, h3, h4, h5 {
+    color: var(--text-light-cream);
+}
+
+   /* =================================
+       Шапка и Навигация
+       ================================= */
+       .navbar {
+        background-color: var(--card-bg-blue);
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        height: 62px; /* Возвращаем высоту */
+    }
+
+    /* Этот блок был случайно удален, возвращаем его */
+    .nav-container {
+        max-width: 1200px;
+        width: 90%;
+        margin: auto;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: relative;
+    }
+
+.logo h1 {
+    color: var(--accent-gold);
+    margin: 0;
+    font-size: 1.6rem;
+    font-weight: 600;
+}
+
+/* Стили для меню (остаются без изменений) */
+.checkbox { display: none; }
+.hamburger-lines {
+    display: block; height: 26px; width: 32px;
+    position: absolute; right: 15px; top: 17px; z-index: 2;
+    display: flex; flex-direction: column; justify-content: space-between;
+    cursor: pointer;
+}
+.hamburger-lines .line {
+    display: block; height: 4px; width: 100%;
+    border-radius: 10px; background: var(--text-light-cream);
+}
+.line1 { transform-origin: 0% 0%; transition: transform 0.4s ease-in-out; }
+.line2 { transition: transform 0.2s ease-in-out; }
+.line3 { transform-origin: 0% 100%; transition: transform 0.4s ease-in-out; }
+.menu-items {
+    position: absolute; top: 62px; right: 0; width: 100%;
+    background-color: var(--card-bg-blue);
+    transform: translateY(-150%);
+    transition: transform 0.5s ease-in-out;
+    display: flex; flex-direction: column; align-items: center;
+    padding: 1rem 0; box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    list-style: none; margin: 0;
+}
+.menu-items li { margin: 1rem 0; }
+.menu-items li a {
+    text-decoration: none; color: var(--accent-gold); font-size: 1.2rem; font-weight: 500;
+}
+.checkbox:checked ~ .menu-items { transform: translateY(0); }
+.checkbox:checked ~ label .line1 { transform: rotate(45deg); }
+.checkbox:checked ~ label .line2 { transform: scaleY(0); }
+.checkbox:checked ~ label .line3 { transform: rotate(-45deg); }
+
+/* =================================
+   Основной контент
+   ================================= */
+.section .header {
+    color: var(--text-light-cream);
+}
+
+/* Фильтры */
+.filter-card {
+    background-color: var(--card-bg-blue);
+    border: none;
+    border-radius: 8px;
+    margin-top: 2rem;
+}
+.filter-card .card-title {
+    color: var(--accent-gold);
+}
+.filter-card label {
+    color: var(--neutral-gray);
+}
+.filter-card .browser-default,
+.filter-card input[type="text"],
+.filter-card input[type="number"] {
+    background-color: var(--bg-dark-blue);
+    color: var(--text-light-cream);
+    border: 1px solid var(--neutral-gray);
+    border-radius: 4px;
+    padding: 5px;
+}
+.filter-card #reset-filters {
+    background-color: var(--accent-gold);
+    color: var(--bg-dark-blue);
+    font-weight: bold;
+}
+
+/* Карточки книг */
+.book-container {
+    margin-top: 2rem;
+    margin-bottom: 50px;
+}
+.book-card {
+    background-color: var(--card-bg-blue);
+    border-radius: 8px;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+.book-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+.book-cover {
+    height: 300px;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 8px 8px 0 0;
+}
+.card .card-image .card-title {
+    background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
+    font-size: 1.2rem;
+}
+.card .card-content {
+    color: var(--text-light-cream);
+}
+.card .card-content p {
+    color: var(--neutral-gray);
+}
+
+/* =================================
+   Модальное окно 
+   ================================= */
+   .modal {
+    background-color: var(--card-bg-blue);
+    border-radius: 12px; /* Добавляем скругления */
+    border: 1px solid rgba(255, 255, 255, 0.1); /* Легкая рамка для объема */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); /* Более мощная тень */
+    max-width: 750px; /* Немного увеличим максимальную ширину */
+}
+
+.modal .modal-content {
+    color: var(--text-light-cream);
+}
+
+/* Стилизуем кнопку закрытия */
+.modal .modal-close {
+    color: var(--neutral-gray); /* Светлый цвет для кнопки */
+    font-size: 1.5rem;
+    transition: color 0.2s ease-in-out;
+}
+.modal .modal-close:hover {
+    color: var(--text-light-cream); /* Делаем ярче при наведении */
+}
+
+.modal #modal-title {
+    color: var(--accent-gold);
+    font-weight: 600;
+}
+
+.modal #modal-category {
+    color: var(--neutral-gray);
+    font-style: italic;
+}
+
+/* Добавляем стили для кнопок скачивания внутри модалки */
+.modal #download-buttons a {
+    font-weight: bold;
+}
+
+/* =================================
+   Подвал
+   ================================= */
+.page-footer {
+    background-color: var(--card-bg-blue);
+    color: var(--neutral-gray);
+    padding-top: 20px;
+}
+.page-footer h5 {
+    color: var(--accent-gold);
+}
+.page-footer p {
+    color: var(--text-light-cream);
+}
+.footer-copyright {
+    background-color: rgba(0,0,0,0.2);
+    min-height: auto;
+    padding: 15px 0;
+}
+
+
+/* =================================
+   Адаптивность (десктопная версия)
+   ================================= */
+@media (min-width: 768px) {
+    label.hamburger-lines { display: none; }
+    .menu-items {
+        position: static; transform: none; background-color: transparent;
+        box-shadow: none; flex-direction: row; padding: 0; width: auto;
+    }
+    .menu-items li { margin: 0 1rem; }
+    .menu-items li a {
+        color: var(--text-light-cream); font-size: 1rem;
+        transition: color 0.2s;
+    }
+    .menu-items li a:hover {
+        color: var(--accent-gold);
+    }
 }

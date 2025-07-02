@@ -1,355 +1,172 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Студенческая библиотека | Лучшие книги в одном месте</title>
-  <meta name="description" content="Нужные книги доступны всем.">
-  <meta name="keywords" content="книги, библиотека, чтение, литература">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Студенческая библиотека | Лучшие книги в одном месте</title>
+    <meta name="description" content="Все нужные книги для учебы и науки, доступные в одном месте.">
+    <meta name="keywords" content="студенческая библиотека, учебники, научная литература, задачники, чтение">
 
-  <meta property="og:title" content="Студенческая библиотека | Лучшие книги">
-  <meta property="og:description" content="Откройте для себя мир книг в нашей обширной библиотеке.">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://elibrary.munificent.net/">
-  <meta property="og:image" content="https://library.munificent.net/preview.png">
+    <meta property="og:title" content="Студенческая библиотека | Лучшие книги">
+    <meta property="og:description" content="Откройте для себя мир знаний в нашей обширной студенческой библиотеке.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://elibrary.munificent.net/">
+    <meta property="og:image" content="https://library.munificent.net/preview.png">
 
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
 
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="css/styles.css">
 
-  <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
-        integrity="sha512-UJfAaOlIRtdR+0P6C3KUoTDAxVTuy3lnSXLyLKlHYJlcSU8Juge/mjeaxDNMlw9LgeIotgz5FP8eUQPhX1q10A=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/icon/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="assets/icon/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/icon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/icon/favicon-16x16.png">
+    <link rel="icon" href="assets/icon/favicon.ico" sizes="any">
+    <link rel="manifest" href="/manifest.json">
 
-  <link rel="stylesheet" href="css/style.css">
-
-  <link rel="apple-touch-icon" sizes="57x57" href="assets/icon/apple-icon-57x57.png">
-  <link rel="apple-touch-icon" sizes="60x60" href="assets/icon/apple-icon-60x60.png">
-  <link rel="apple-touch-icon" sizes="72x72" href="assets/icon/apple-icon-72x72.png">
-  <link rel="apple-touch-icon" sizes="76x76" href="assets/icon/apple-icon-76x76.png">
-  <link rel="apple-touch-icon" sizes="114x114" href="assets/icon/apple-icon-114x114.png">
-  <link rel="apple-touch-icon" sizes="120x120" href="assets/icon/apple-icon-120x120.png">
-  <link rel="apple-touch-icon" sizes="144x144" href="assets/icon/apple-icon-144x144.png">
-  <link rel="apple-touch-icon" sizes="152x152" href="assets/icon/apple-icon-152x152.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="assets/icon/apple-icon-180x180.png">
-  <link rel="icon" type="image/png" sizes="192x192"  href="assets/icon/android-icon-192x192.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/icon/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="96x96" href="assets/icon/favicon-96x96.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="assets/icon/favicon-16x16.png">
-  <link rel="icon" href="assets/icon/favicon.ico" sizes="any">
-  <link rel="manifest" href="/manifest.json">
-  <meta name="msapplication-TileColor" content="#ffffff">
-  <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
-  <meta name="theme-color" content="#ffffff">
-
-  <style>
-    @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;900&display=swap");
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    body {
-      font-family: "Poppins", sans-serif;
-    }
-
-    /* Navigation Bar */
-    nav.navbar {
-      width: 100%;
-      background-color: #0019ff; /* фирменный синий */
-      box-shadow: 0 1px 4px rgb(146 161 176 / 15%);
-    }
-    .nav-container {
-      max-width: 1200px;
-      width: 90%;
-      margin: auto;
-      height: 62px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between; /* Logo on the left, menu on the right */
-      position: relative;
-    }
-
-    /* Logo */
-    .logo h1 {
-      color: #FFC700;
-      margin: 0;
-      font-size: 1.5rem;
-      font-weight: 600;
-    }
-
-    /* Checkbox for mobile menu toggle */
-    .checkbox {
-      display: none; /* Label will be clicked */
-    }
-
-    /* Hamburger menu icon in label */
-    .hamburger-lines {
-      display: block;
-      height: 26px;
-      width: 32px;
-      position: absolute;
-      right: 15px;
-      top: 17px;
-      z-index: 2;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      cursor: pointer;
-    }
-    .hamburger-lines .line {
-      display: block;
-      height: 4px;
-      width: 100%;
-      border-radius: 10px;
-      background: #fff; /* White lines */
-    }
-    .line1 {
-      transform-origin: 0% 0%;
-      transition: transform 0.4s ease-in-out;
-    }
-    .line2 {
-      transition: transform 0.2s ease-in-out;
-    }
-    .line3 {
-      transform-origin: 0% 100%;
-      transition: transform 0.4s ease-in-out;
-    }
-
-    /* Mobile menu - hidden by default */
-    .menu-items {
-      position: absolute;
-      top: 62px; /* Directly below the header */
-      right: 0;
-      width: 100%;
-      background-color: #fff;
-      transform: translateY(-150%);
-      transition: transform 0.5s ease-in-out;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 1rem 0;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    }
-    .menu-items li {
-      list-style: none;
-      margin: 1rem 0;
-    }
-    .menu-items li a {
-      text-decoration: none;
-      color: #0019ff;
-      font-size: 1.2rem;
-      font-weight: 500;
-    }
-
-    /* Show menu when checkbox is checked (via label) */
-    .checkbox:checked ~ .menu-items {
-      transform: translateY(0);
-    }
-    .checkbox:checked ~ label .line1 {
-      transform: rotate(45deg);
-    }
-    .checkbox:checked ~ label .line2 {
-      transform: scaleY(0);
-    }
-    .checkbox:checked ~ label .line3 {
-      transform: rotate(-45deg);
-    }
-
-    /* Desktop (≥768px): hide hamburger, show menu on the right */
-    @media (min-width: 768px) {
-      label.hamburger-lines {
-        display: none;
-      }
-      .menu-items {
-        position: static;
-        transform: none;
-        background-color: transparent;
-        box-shadow: none;
-        flex-direction: row;
-        padding: 0;
-        width: auto;
-        margin-right: 0;
-      }
-      .menu-items li {
-        margin: 0 1rem;
-      }
-      .menu-items li a {
-        color: #fff;
-        font-size: 1rem;
-      }
-    }
-  </style>
+    <meta name="msapplication-TileColor" content="#0019ff">
+    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+    <meta name="theme-color" content="#0019ff">
 </head>
-
 <body>
 
-<nav class="navbar">
-  <div class="nav-container">
-    <div class="logo">
-      <h1>Библиотека</h1>
-    </div>
+    <header>
+        <nav class="navbar brand-bg-blue">
+            <div class="nav-container">
+                <div class="logo">
+                    <h1 class="brand-text-yellow">Библиотека</h1>
+                </div>
+                <input class="checkbox" type="checkbox" id="menu-toggle" />
+                <label for="menu-toggle" class="hamburger-lines">
+                    <span class="line line1"></span>
+                    <span class="line line2"></span>
+                    <span class="line line3"></span>
+                </label>
+                <ul class="menu-items">
+                    <li><a href="https://elibrary.munificent.net/">Главная</a></li>
+                    <li><a href="https://t.me/munificent_bot" target="_blank" rel="noopener">Предложить книгу</a></li>
+                    <li><a href="#">Контакты</a></li>
+                    <li><a href="#">О нас</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
 
-    <input class="checkbox" type="checkbox" id="menu-toggle" />
-    <label for="menu-toggle" class="hamburger-lines">
-      <span class="line line1"></span>
-      <span class="line line2"></span>
-      <span class="line line3"></span>
-    </label>
+    <main>
+        <section class="section no-pad-bot">
+            <div class="container">
+                <h1 class="header center">Добро пожаловать!</h1>
+                <div class="row center">
+                    <h5 class="header col s12 light">
+                        Наша студенческая библиотека. Найдите материалы по любым направлениям.
+                    </h5>
+                </div>
+            </div>
+        </section>
 
-    <ul class="menu-items">
-      <li><a href="https://elibrary.munificent.net/">Главная</a></li>
-      <li><a href="https://t.me/munificent_bot" target="_blank" rel="noopener">Предложить книгу</a></li>
-      <li><a href="#">Контакты</a></li>
-      <li><a href="#">О нас</a></li>
-    </ul>
-  </div>
-</nav>
-
-<div class="section no-pad-bot" style="background-color: #fff;">
-  <div class="container">
-    <br><br>
-    <h1 class="header center" style="color:#000;">Добро пожаловать!</h1>
-    <div class="row center">
-      <h5 class="header col s12 light" style="color:#000;">
-        Наша студенческая библиотека. Найдите материалы по любым направлениям
-      </h5>
-    </div>
-    <br><br>
-  </div>
-</div>
-
-<div class="container">
-  <div class="card hoverable" style="border:1px solid #000;">
-    <div class="card-content" style="color:#000;">
-      <span class="card-title">Фильтры и Поиск</span>
-      <div class="row">
-        <div class="col s12 m6 l3">
-          <label for="direction-filter">Категория</label>
-          <select id="direction-filter" class="browser-default">
-            <option value="">Все категории</option>
-            <option value="учебные материалы">Учебные материалы</option>
-            <option value="научная литература">Научная литература</option>
-            <option value="справочные издания">Справочные издания</option>
-            <option value="естественные науки">Естественные науки</option>
-            <option value="технические науки">Технические науки</option>
-            <option value="гуманитарные науки">Гуманитарные науки</option>
-            <option value="социальные науки">Социальные науки</option>
-            <option value="экономические науки">Экономические науки</option>
-          </select>
+        <div class="container">
+            <div class="card hoverable filter-card">
+                <div class="card-content">
+                    <span class="card-title">Фильтры и Поиск</span>
+                    <div class="row">
+                        <div class="col s12 m6 l3">
+                            <label for="direction-filter">Категория</label>
+                            <select id="direction-filter" class="browser-default">
+                                <option value="" selected>Все категории</option>
+                                <option value="учебные материалы">Учебные материалы</option>
+                                <option value="научная литература">Научная литература</option>
+                                <option value="справочные издания">Справочные издания</option>
+                            </select>
+                        </div>
+                        <div class="col s12 m6 l3">
+                            <label for="type-filter">Тип</label>
+                            <select id="type-filter" class="browser-default">
+                                <option value="" selected>Все типы</option>
+                                <option value="учебники">Учебники</option>
+                                <option value="учебные пособия">Учебные пособия</option>
+                                <option value="практикумы">Практикумы</option>
+                            </select>
+                        </div>
+                        <div class="col s12 m6 l2">
+                            <label for="year-filter">Год</label>
+                            <input id="year-filter" type="number" placeholder="Напр. 2020">
+                        </div>
+                        <div class="col s12 m6 l2">
+                            <label for="lang-filter">Язык</label>
+                            <select id="lang-filter" class="browser-default">
+                                <option value="" selected>Все</option>
+                                <option value="русский">Русский</option>
+                                <option value="английский">Английский</option>
+                            </select>
+                        </div>
+                        <div class="col s12 m6 l2">
+                            <label for="search-title">Поиск</label>
+                            <input id="search-title" type="text" placeholder="Название...">
+                        </div>
+                    </div>
+                    <div class="row center">
+                        <button id="reset-filters" class="btn waves-effect waves-light brand-bg-yellow black-text">
+                            Сбросить
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="col s12 m6 l3">
-          <label for="type-filter">Тип</label>
-          <select id="type-filter" class="browser-default">
-            <option value="">Все типы</option>
-            <option value="учебники">Учебники</option>
-            <option value="учебные пособия">Учебные пособия</option>
-            <option value="практикумы">Практикумы</option>
-            <option value="монографии">Монографии</option>
-            <option value="диссертации">Диссертации</option>
-          </select>
-        </div>
-        <div class="col s12 m6 l2">
-          <label for="year-filter">Год</label>
-          <input id="year-filter" type="number" placeholder="Напр. 2020">
-        </div>
-        <div class="col s12 m6 l2">
-          <label for="lang-filter">Язык</label>
-          <select id="lang-filter" class="browser-default">
-            <option value="">Все</option>
-            <option value="русский">Русский</option>
-            <option value="английский">Английский</option>
-            <option value="казахский">Казахский</option>
-            <option value="другой">Другой</option>
-          </select>
-        </div>
-        <div class="col s12 m6 l2">
-          <label for="search-title">Поиск</label>
-          <input id="search-title" type="text" placeholder="Название...">
-        </div>
-      </div>
-      <div class="row center">
-        <button id="reset-filters" class="btn waves-effect waves-light"
-                style="background-color:#FFC700; color:#000;">
-          Сбросить
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
 
-<div class="container" style="margin-bottom: 50px;">
-  <div class="row" id="book-list"></div>
-  <div class="row center" id="pagination" style="margin-top:20px;"></div>
-</div>
+        <div class="container book-container">
+            <div class="row" id="book-list">
+                </div>
+            <div class="row center" id="pagination">
+                </div>
+        </div>
 
-<div id="modal-overlay" class="modal">
-  <div class="modal-content" style="color:#000;">
-    <a href="#!" class="modal-close btn-flat right">&times;</a>
-    <div class="row">
-      <div class="col s12 m4">
-        <img id="modal-cover" src="" alt="Обложка" class="responsive-img">
-      </div>
-      <div class="col s12 m8">
-        <h5 id="modal-title" style="color:#0019ff;"></h5>
-        <p id="modal-author"></p>
-        <p id="modal-year"></p>
-        <p id="modal-lang"></p>
-        <p id="modal-description" class="flow-text"></p>
-        <p style="color:#777; font-size:14px;" id="modal-category"></p>
-        <div id="download-buttons"></div>
-      </div>
-    </div>
-  </div>
-</div>
+        <div id="modal-book-details" class="modal">
+            <div class="modal-content">
+                <a href="#!" class="modal-close btn-flat right">&times;</a>
+                <div class="row">
+                    <div class="col s12 m4">
+                        <img id="modal-cover" src="" alt="Обложка книги" class="responsive-img">
+                    </div>
+                    <div class="col s12 m8">
+                        <h5 id="modal-title" class="brand-text-blue"></h5>
+                        <p id="modal-author"></p>
+                        <p id="modal-year"></p>
+                        <p id="modal-lang"></p>
+                        <p id="modal-description" class="flow-text"></p>
+                        <p id="modal-category" class="grey-text"></p>
+                        <div id="download-buttons"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
 
-<footer class="page-footer" style="background-color:#0019ff;">
-  <div class="container">
-    <div class="row">
-      <div class="col s12 m6">
-        <h5 style="color:#FFC700;">Студенческая библиотека</h5>
-        <p style="color:#fff;">Материалы по учебным дисциплинам, научной литературе, справочникам и т.д.</p>
-      </div>
-      <div class="col s12 m6 right-align" style="color:#FFC700;">
-        <p>Разработка: ШизаПроджект</p>
-        <a href="https://t.me/munificent_bot" target="_blank"
-           class="btn waves-effect waves-light"
-           style="background-color:#FFC700; color:#000; margin-top:20px;"
-           rel="noopener">
-          Предложить книги
-        </a>
-      </div>
-    </div>
-  </div>
-  <div class="center" style="color:#fff; padding:10px;">
-    © 2025. Все права защищены. Использование материалов возможно только с активной ссылкой на сайт.
-  </div>
-</footer>
+    <footer class="page-footer brand-bg-blue">
+        <div class="container">
+            <div class="row valign-wrapper">
+                <div class="col s12 m6">
+                    <h5 class="brand-text-yellow">Студенческая библиотека</h5>
+                    <p>Материалы по учебным дисциплинам, научной литературе и справочникам.</p>
+                </div>
+                <div class="col s12 m6 right-align">
+                     <p>Разработка: <a href="https://github.com/shiza-project" class="brand-text-yellow" target="_blank" rel="noopener">ShizaProject</a></p>
+                    <a href="https://t.me/munificent_bot" target="_blank" rel="noopener" class="btn waves-effect waves-light brand-bg-yellow black-text">
+                        Предложить книгу
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-copyright">
+            <div class="container center">
+                © 2025. Все права защищены.
+            </div>
+        </div>
+    </footer>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-<script src="js/script.js"></script>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  var modals = document.querySelectorAll('.modal');
-  M.Modal.init(modals);
-});
-</script>
-<script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', function() {
-      navigator.serviceWorker.register('/sw.js').then(
-        function(registration) {
-          console.log('ServiceWorker registration successful with scope:', registration.scope);
-        },
-        function(err) {
-          console.log('ServiceWorker registration failed:', err);
-        }
-      );
-    });
-  }
-</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="js/script.js"></script>
 </body>
 </html>

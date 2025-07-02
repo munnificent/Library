@@ -3,64 +3,67 @@
 // Импортируем библиотеку sw-toolbox
 importScripts('sw-toolbox.js');
 
-/**
- * Перечень файлов, которые будут закешированы во время установки
- * (на этапе 'install' Service Worker).
- * В нашем примере это основные страницы и стили/скрипты.
- */
-toolbox.precache([
+// --- Конфигурация Service Worker ---
+
+// 1. Файлы "оболочки" приложения для немедленного кэширования.
+// Это основные ресурсы, необходимые для запуска приложения.
+const appShellFiles = [
+  '/',
   'index.html',
   '404.html',
-  'style/style.css',
-  'style/404.css',
-  'js/script.js'
-]);
+  'manifest.json',
+  'books.json',
+  'css/styles.css',
+  'css/404.css',
+  'js/script.js',
+  'assets/icon/favicon.ico',
+  'assets/icon/apple-icon-180x180.png'
+];
 
-/**
- * Стратегия для изображений:
- *  - cacheFirst: сначала пытаемся получить файл из кеша,
- *    при отсутствии файла в кеше – делаем сетевой запрос
- */
-toolbox.router.get('/assets/img/*', toolbox.cacheFirst, {
-  // Дополнительные настройки кеша (необязательно)
+// Кэшируем "оболочку" приложения при установке
+toolbox.precache(appShellFiles);
+
+
+// 2. Стратегии кэширования в реальном времени (runtime).
+
+// Стратегия для изображений и PDF-файлов книг: "сначала кэш".
+// Если ресурс есть в кэше, он будет взят оттуда мгновенно.
+// Если нет - будет загружен из сети и добавлен в кэш.
+toolbox.router.get('/assets/(img|files)/.*', toolbox.cacheFirst, {
   cache: {
-    name: 'img-cache',     // Имя кеша
-    maxEntries: 50,        // Максимальное кол-во ресурсов в кеше
-    maxAgeSeconds: 7 * 24 * 60 * 60 // Срок хранения (в секундах), напр. 7 дней
+    name: 'asset-cache',
+    maxEntries: 100, // Максимум 100 файлов (обложки + книги)
+    maxAgeSeconds: 30 * 24 * 60 * 60, // Хранить 30 дней
   }
 });
 
-/**
- * Стратегия для всех остальных запросов:
- *  - networkFirst: пытаемся получить ресурс из сети,
- *    если сеть недоступна или не отвечает дольше networkTimeoutSeconds,
- *    используем кеш
- */
+// Стратегия для API шрифтов Google: "сначала кэш".
+// Шрифты редко меняются, поэтому их безопасно кэшировать.
+toolbox.router.get('https://fonts.googleapis.com/.*', toolbox.cacheFirst, {
+  cache: {
+    name: 'google-fonts-cache',
+    maxEntries: 5,
+  }
+});
+
+// Стратегия по умолчанию для всех остальных запросов: "сначала сеть".
+// Приложение попытается получить свежую версию из сети.
+// Если сети нет, будет использована версия из кэша.
 toolbox.router.get('/*', toolbox.networkFirst, {
-  networkTimeoutSeconds: 5, // Таймаут сети в секундах
-  cache: {
-    name: 'default-cache',  // Имя кеша для прочих запросов
-    maxEntries: 100,
-    maxAgeSeconds: 30 * 24 * 60 * 60 // Напр., 30 дней
-  }
+  networkTimeoutSeconds: 5, // Таймаут ожидания сети (5 секунд)
 });
 
-/**
- * Опционально: Обработчик события установки (install).
- * Можно управлять тем, когда сервис-воркер активируется,
- * дожидаясь завершения кеширования и пр.
- */
+
+// 3. Жизненный цикл Service Worker (необязательно, для отладки).
+
 self.addEventListener('install', event => {
-  console.log('[Service Worker] Install event.');
-  // Можно добавить пропуск ожидания активации (skipWaiting)
-  // event.waitUntil(self.skipWaiting());
+  console.log('[Service Worker] Установка...');
+  // Принудительная активация новой версии Service Worker
+  return self.skipWaiting();
 });
 
-/**
- * Опционально: Обработчик события активации (activate).
- * Можно, например, чистить старые версии кешей.
- */
 self.addEventListener('activate', event => {
-  console.log('[Service Worker] Activate event.');
-  // event.waitUntil(...) – логика очистки устаревших кешей и т.д.
+  console.log('[Service Worker] Активация...');
+  // Управление текущей страницей без необходимости перезагрузки
+  return self.clients.claim();
 });

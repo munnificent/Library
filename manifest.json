@@ -1,64 +1,32 @@
 {
-    "theme_color": "#ffffff",
-    "background_color": "#2EC6FE",
-    "icons": [{
-        "purpose": "maskable",
-        "sizes": "512x512",
-        "src": "assets/icon/icon512_maskable.png",
-        "type": "image/png"
-    },
-    {
-        "purpose": "any",
-        "sizes": "512x512",
-        "src": "assets/icon/icon512_rounded.png",
-        "type": "image/png"
-    },
-    {
-        "src": "assets/icon/android-chrome-512x512.png",
-        "sizes": "512x512",
-        "type": "image/png"
-    },
-    {
-        "src": "assets/icon//android-icon-36x36.png",
-        "sizes": "36x36",
-        "type": "image/png",
-        "density": "0.75"
-       },
-       {
-        "src": "assets/icon//android-icon-48x48.png",
-        "sizes": "48x48",
-        "type": "image/png",
-        "density": "1.0"
-       },
-       {
-        "src": "assets/icon//android-icon-72x72.png",
-        "sizes": "72x72",
-        "type": "image/png",
-        "density": "1.5"
-       },
-       {
-        "src": "assets/icon//android-icon-96x96.png",
-        "sizes": "96x96",
-        "type": "image/png",
-        "density": "2.0"
-       },
-       {
-        "src": "assets/icon//android-icon-144x144.png",
-        "sizes": "144x144",
-        "type": "imageassets/icon//png",
-        "density": "3.0"
-       },
-       {
-        "src": "assets/icon//android-icon-192x192.png",
+    "name": "Студенческая библиотека",
+    "short_name": "Библиотека",
+    "description": "Все нужные книги для учебы и науки, доступные в одном месте.",
+    "lang": "ru",
+    "dir": "auto",
+    "start_url": "/index.html",
+    "display": "standalone",
+    "orientation": "portrait-primary",
+    "background_color": "#ffffff",
+    "theme_color": "#0019ff",
+    "icons": [
+      {
+        "src": "assets/icon/android-chrome-192x192.png",
         "sizes": "192x192",
         "type": "image/png",
-        "density": "4.0"
-       }],
-    "orientation": "any",
-    "display": "standalone",
-    "dir": "auto",
-    "lang": "ru-KZ",
-    "name": "Студенческая библиотека",
-    "short_name": "Студ библиотека",
-    "start_url": "https://library.munificent.net/"
-}
+        "purpose": "any"
+      },
+      {
+        "src": "assets/icon/android-chrome-512x512.png",
+        "sizes": "512x512",
+        "type": "image/png",
+        "purpose": "any"
+      },
+      {
+        "src": "assets/icon/icon512_maskable.png",
+        "sizes": "512x512",
+        "type": "image/png",
+        "purpose": "maskable"
+      }
+    ]
+  }
