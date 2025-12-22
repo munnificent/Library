@@ -25,10 +25,10 @@
     <link rel="icon" type="image/png" sizes="32x32" href="assets/icon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="assets/icon/favicon-16x16.png">
     <link rel="icon" href="assets/icon/favicon.ico" sizes="any">
-    <link rel="manifest" href="/manifest.json">
+    <link rel="manifest" href="manifest.json">
 
     <meta name="msapplication-TileColor" content="#0019ff">
-    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+    <meta name="msapplication-TileImage" content="ms-icon-144x144.png">
     <meta name="theme-color" content="#0019ff">
 </head>
 <body>
@@ -37,7 +37,7 @@
         <nav class="navbar brand-bg-blue">
             <div class="nav-container">
                 <div class="logo">
-                    <h1 class="brand-text-yellow">Библиотека</h1>
+                    <h1>Библиотека</h1>
                 </div>
                 <input class="checkbox" type="checkbox" id="menu-toggle" />
                 <label for="menu-toggle" class="hamburger-lines">
@@ -76,18 +76,12 @@
                             <label for="direction-filter">Категория</label>
                             <select id="direction-filter" class="browser-default">
                                 <option value="" selected>Все категории</option>
-                                <option value="учебные материалы">Учебные материалы</option>
-                                <option value="научная литература">Научная литература</option>
-                                <option value="справочные издания">Справочные издания</option>
                             </select>
                         </div>
                         <div class="col s12 m6 l3">
                             <label for="type-filter">Тип</label>
                             <select id="type-filter" class="browser-default">
                                 <option value="" selected>Все типы</option>
-                                <option value="учебники">Учебники</option>
-                                <option value="учебные пособия">Учебные пособия</option>
-                                <option value="практикумы">Практикумы</option>
                             </select>
                         </div>
                         <div class="col s12 m6 l2">
@@ -103,12 +97,27 @@
                             </select>
                         </div>
                         <div class="col s12 m6 l2">
+                            <label for="sort-filter">Сортировка</label>
+                            <select id="sort-filter" class="browser-default">
+                                <option value="newest" selected>Сначала новые</option>
+                                <option value="alphabetical">По алфавиту</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                         <div class="col s12 m6 l8">
                             <label for="search-title">Поиск</label>
                             <input id="search-title" type="text" placeholder="Название...">
                         </div>
+                        <div class="col s12 m6 l4 valign-wrapper" style="height: 80px;">
+                            <label>
+                                <input type="checkbox" id="favorites-filter" class="filled-in" />
+                                <span>Только избранное</span>
+                            </label>
+                        </div>
                     </div>
                     <div class="row center">
-                        <button id="reset-filters" class="btn waves-effect waves-light brand-bg-yellow black-text">
+                        <button id="reset-filters" class="btn waves-effect waves-light">
                             Сбросить
                         </button>
                     </div>
@@ -131,13 +140,18 @@
                         <img id="modal-cover" src="" alt="Обложка книги" class="responsive-img">
                     </div>
                     <div class="col s12 m8">
-                        <h5 id="modal-title" class="brand-text-blue"></h5>
+                        <h5 id="modal-title"></h5>
                         <p id="modal-author"></p>
                         <p id="modal-year"></p>
                         <p id="modal-lang"></p>
                         <p id="modal-description" class="flow-text"></p>
-                        <p id="modal-category" class="grey-text"></p>
+                        <p id="modal-category"></p>
                         <div id="download-buttons"></div>
+                        <div style="margin-top: 20px;">
+                            <button id="share-btn" class="btn-flat waves-effect">
+                                <i class="material-icons left">share</i>Поделиться
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -152,8 +166,8 @@
                     <p>Материалы по учебным дисциплинам, научной литературе и справочникам.</p>
                 </div>
                 <div class="col s12 m6 right-align">
-                     <p>Разработка: <a href="https://github.com/munnificent/" class="brand-text-yellow" target="_blank" rel="noopener">Munificent Studio</a></p>
-                    <a href="https://t.me/munificent_bot" target="_blank" rel="noopener" class="btn waves-effect waves-light brand-bg-yellow black-text">
+                     <p>Разработка: <a href="https://github.com/munnificent/" target="_blank" rel="noopener">Munificent Studio</a></p>
+                    <a href="https://t.me/munificent_bot" target="_blank" rel="noopener" class="btn waves-effect waves-light">
                         Предложить книгу
                     </a>
                 </div>
