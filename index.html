@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -31,6 +32,7 @@
     <meta name="msapplication-TileImage" content="ms-icon-144x144.png">
     <meta name="theme-color" content="#0019ff">
 </head>
+
 <body>
 
     <header>
@@ -46,10 +48,11 @@
                     <span class="line line3"></span>
                 </label>
                 <ul class="menu-items">
-                    <li><a href="https://elibrary.munificent.net/">Главная</a></li>
-                    <li><a href="https://t.me/munificent_bot" target="_blank" rel="noopener">Предложить книгу</a></li>
-                    <li><a href="#">Контакты</a></li>
-                    <li><a href="#">О нас</a></li>
+                    <li><a href="index.html">Главная</a></li>
+                    <li><a href="https://kaznpu.munificent.net/contacts.html" target="_blank">Расчет баллов</a></li>
+                    <li><a href="https://t.me/munificent_bot" target="_blank">Предложить книгу</a></li>
+                    <li><a href="contacts.html">Контакты</a></li>
+                    <li><a href="about.html">О нас</a></li>
                 </ul>
             </div>
         </nav>
@@ -76,12 +79,37 @@
                             <label for="direction-filter">Категория</label>
                             <select id="direction-filter" class="browser-default">
                                 <option value="" selected>Все категории</option>
+                                <optgroup label="Sciences">
+                                    <option value="Natural Sciences">Natural Sciences</option>
+                                    <option value="Exact Sciences">Exact Sciences</option>
+                                </optgroup>
+                                <optgroup label="Humanities">
+                                    <option value="History">History</option>
+                                    <option value="Philology">Philology</option>
+                                    <option value="Philosophy">Philosophy</option>
+                                </optgroup>
+                                <optgroup label="Other">
+                                    <option value="Reference">Reference</option>
+                                    <option value="General">General</option>
+                                </optgroup>
                             </select>
                         </div>
                         <div class="col s12 m6 l3">
                             <label for="type-filter">Тип</label>
                             <select id="type-filter" class="browser-default">
                                 <option value="" selected>Все типы</option>
+                                <optgroup label="Theory">
+                                    <option value="Textbooks">Textbooks</option>
+                                    <option value="Monographs">Monographs</option>
+                                </optgroup>
+                                <optgroup label="Practice">
+                                    <option value="Workshop">Workshop</option>
+                                    <option value="Problem Books">Problem Books</option>
+                                </optgroup>
+                                <optgroup label="Help">
+                                    <option value="Guides">Guides</option>
+                                    <option value="Manuals">Manuals</option>
+                                </optgroup>
                             </select>
                         </div>
                         <div class="col s12 m6 l2">
@@ -105,7 +133,7 @@
                         </div>
                     </div>
                     <div class="row">
-                         <div class="col s12 m6 l8">
+                        <div class="col s12 m6 l8">
                             <label for="search-title">Поиск</label>
                             <input id="search-title" type="text" placeholder="Название...">
                         </div>
@@ -127,9 +155,9 @@
 
         <div class="container book-container">
             <div class="row" id="book-list">
-                </div>
+            </div>
             <div class="row center" id="pagination">
-                </div>
+            </div>
         </div>
 
         <div id="modal-book-details" class="modal">
@@ -166,8 +194,10 @@
                     <p>Материалы по учебным дисциплинам, научной литературе и справочникам.</p>
                 </div>
                 <div class="col s12 m6 right-align">
-                     <p>Разработка: <a href="https://github.com/munnificent/" target="_blank" rel="noopener">Munificent Studio</a></p>
-                    <a href="https://t.me/munificent_bot" target="_blank" rel="noopener" class="btn waves-effect waves-light">
+                    <p>Разработка: <a href="https://github.com/munnificent/" target="_blank" rel="noopener">Munificent
+                            Studio</a></p>
+                    <a href="https://t.me/munificent_bot" target="_blank" rel="noopener"
+                        class="btn waves-effect waves-light">
                         Предложить книгу
                     </a>
                 </div>
@@ -183,4 +213,5 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="js/script.js"></script>
 </body>
+
 </html>
